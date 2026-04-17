@@ -1,0 +1,121 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Hind+Siliguri:wght@400;600&display=swap');
+
+@import "tailwindcss";
+
+/* ─── Light Mode — Harvest ─────────────────── */
+:root {
+  --bg: #FDFBF7;
+  --surface: #FFFFFF;
+  --surface-2: #F5F1E8;
+  --border: #E8E2D4;
+  --text: #1C1B18;
+  --text-muted: #6B6A63;
+  --primary: #2F6B3A;
+  --primary-hover: #265930;
+  --primary-soft: #E8F0E6;
+  --accent: #E07A2C;
+  --accent-soft: #FCEFE0;
+  --success: #2F8F4E;
+  --warning: #D9A441;
+  --danger: #C8453A;
+  --info: #3A7DC8;
+}
+
+/* ─── Dark Mode — Moonlit Orchard ────────────── */
+.dark {
+  --bg: #121210;
+  --surface: #1B1B18;
+  --surface-2: #242320;
+  --border: #2F2D28;
+  --text: #F2EEE5;
+  --text-muted: #9C9A92;
+  --primary: #6BB36F;
+  --primary-hover: #82C486;
+  --primary-soft: #1F2C21;
+  --accent: #F39556;
+  --accent-soft: #2E2319;
+  --success: #5FB87A;
+  --warning: #E3B866;
+  --danger: #E26A61;
+  --info: #6BA5E0;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+@layer utilities {
+  .price-num { font-variant-numeric: tabular-nums; }
+  .scrollbar-thin::-webkit-scrollbar { width: 4px; height: 4px; }
+  .scrollbar-thin::-webkit-scrollbar-track { background: var(--surface-2); }
+  .scrollbar-thin::-webkit-scrollbar-thumb { background: var(--border); border-radius: 9999px; }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer;
+    border-radius: 10px;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  .btn-sm { @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer h-8 px-3 text-sm; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .btn-md { @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer h-10 px-4 text-sm; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; }
+  .btn-lg { @apply inline-flex items-center justify-center gap-2 font-semibold transition-all duration-150 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer h-12 px-6 text-base; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:hover { background: var(--primary-hover); }
+  .btn-secondary { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+  .btn-secondary:hover { background: var(--primary-soft); }
+  .btn-ghost { background: transparent; color: var(--text-muted); }
+  .btn-ghost:hover { color: var(--text); background: var(--surface-2); }
+  .btn-accent { background: var(--accent); color: white; }
+  .btn-accent:hover { opacity: 0.9; }
+  .btn-danger { background: var(--danger); color: white; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(28,27,24,0.06);
+  }
+
+  .input {
+    @apply w-full h-11 px-3 text-sm transition-all duration-150 focus:outline-none;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+  }
+  .input::placeholder { color: var(--text-muted); }
+  .input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 20%, transparent);
+  }
+
+  .badge { @apply inline-flex items-center px-2 py-0.5 text-xs font-semibold rounded-full; }
+  .badge-primary { background: var(--primary-soft); color: var(--primary); }
+  .badge-accent { background: var(--accent-soft); color: var(--accent); }
+  .badge-success { background: #d1fae5; color: var(--success); }
+  .badge-warning { background: #fef3c7; color: var(--warning); }
+  .badge-danger { background: #fee2e2; color: var(--danger); }
+
+  .dark .badge-success { background: #14532d; color: var(--success); }
+  .dark .badge-warning { background: #3b2800; color: var(--warning); }
+  .dark .badge-danger { background: #3b0a0a; color: var(--danger); }
+
+  .section-title {
+    @apply font-bold text-2xl md:text-3xl;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: var(--text);
+  }
+}
