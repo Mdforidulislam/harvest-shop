@@ -44,7 +44,7 @@ export default function AdminOrdersPage() {
     setEditOrder(null);
   }
 
-  const counts = { all: orders.length, ...Object.fromEntries(Object.keys(statusCfg).map((s) => [s, orders.filter((o) => o.status === s).length])) };
+  const counts: Record<string, number> = { all: orders.length, ...Object.fromEntries(Object.keys(statusCfg).map((s) => [s, orders.filter((o) => o.status === s).length])) };
 
   return (
     <div className="max-w-[1600px] mx-auto space-y-8 pb-20">

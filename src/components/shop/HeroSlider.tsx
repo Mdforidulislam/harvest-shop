@@ -36,7 +36,7 @@ export default function HeroSlider() {
       opacity: 1,
       scale: 1,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
+        x: { type: "spring" as const, stiffness: 300, damping: 30 },
         opacity: { duration: 0.5 },
         scale: { duration: 0.8 },
       },
@@ -46,7 +46,7 @@ export default function HeroSlider() {
       opacity: 0,
       scale: 0.9,
       transition: {
-        x: { type: "spring", stiffness: 300, damping: 30 },
+        x: { type: "spring" as const, stiffness: 300, damping: 30 },
         opacity: { duration: 0.4 },
       },
     }),
