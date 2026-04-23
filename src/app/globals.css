@@ -2,42 +2,65 @@
 
 @import "tailwindcss";
 
-/* ─── Light Mode — Pure Harvest ─────────────────── */
+/* ─── Drovo.bd — Light Mode ─────────────────── */
 :root {
-  --bg: #F9F9F7;
+  --bg: #FBF9F5;
   --surface: #FFFFFF;
-  --surface-2: #F1F1EE;
-  --border: #E5E5E0;
-  --text: #111111;
-  --text-muted: #555555;
-  --primary: #2F6B3A;
-  --primary-hover: #1E4D25;
-  --primary-soft: #ECFDF5;
-  --accent: #F58220;
-  --accent-soft: #FFF7ED;
+  --surface-2: #FFFFFF;
+  --border: #E2E8EF;
+  --text: #1A1A2E;
+  --text-muted: #64748B;
+  --primary: #042b50;
+  --primary-hover: #031e3a;
+  --primary-soft: #E8EEF5;
+  --accent: #f48721;
+  --accent-hover: #e07518;
+  --accent-soft: #FEF3E2;
   --success: #10B981;
   --warning: #F59E0B;
   --danger: #EF4444;
   --info: #3B82F6;
+  --cta-green: #2F6B3A;
+  --cta-green-hover: #255930;
+  --star: #FFB400;
 }
 
-/* ─── Dark Mode — Moonlit Orchard ────────────── */
+/* ─── Drovo.bd — Dark Mode ────────────── */
 .dark {
-  --bg: #121210;
-  --surface: #1B1B18;
-  --surface-2: #242320;
-  --border: #2F2D28;
-  --text: #F2EEE5;
-  --text-muted: #9C9A92;
-  --primary: #6BB36F;
-  --primary-hover: #82C486;
-  --primary-soft: #1F2C21;
-  --accent: #F39556;
-  --accent-soft: #2E2319;
-  --success: #5FB87A;
-  --warning: #E3B866;
-  --danger: #E26A61;
-  --info: #6BA5E0;
+  --bg: #0D1B2A;
+  --surface: #112236;
+  --surface-2: #162D46;
+  --border: #1E3A56;
+  --text: #E8F0F8;
+  --text-muted: #8BA4BE;
+  --primary: #1a5a9e;
+  --primary-hover: #2268b5;
+  --primary-soft: #0D2A44;
+  --accent: #f48721;
+  --accent-hover: #e07518;
+  --accent-soft: #2A1E0D;
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --info: #60A5FA;
+  --cta-green: #3a9e52;
+  --cta-green-hover: #4ab562;
+  --star: #FFB400;
+}
+
+/* ─── Layout Containers ─── */
+.page-container {
+  max-width: 96rem;
+  margin-left: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  margin-right: auto;
+}
+
+.admin-container {
+  max-width: 1600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 * {

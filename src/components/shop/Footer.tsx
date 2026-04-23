@@ -1,119 +1,158 @@
 "use client";
 import Link from "next/link";
-import { Phone, Mail, MapPin, Sparkles, Send, ArrowRight } from "lucide-react";
-
-const FacebookIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
-);
-const InstagramIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" y1="6.5" x2="17.51" y2="6.5" /></svg>
-);
-const YoutubeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46A2.78 2.78 0 0 0 1.46 6.42 29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.96C5.12 20 12 20 12 20s6.88 0 8.59-.46a2.78 2.78 0 0 0 1.95-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z" /><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="white" /></svg>
-);
-
-const footLinks = {
-  roots: [
-    { label: "Our Story", href: "/about" },
-    { label: "The Wisdom Blog", href: "/blog" },
-    { label: "Farmer Networks", href: "/farmers" },
-    { label: "Community", href: "/community" },
-  ],
-  harvests: [
-    { label: "Raw Honey", href: "/category/honey" },
-    { label: "Organic Ghee", href: "/category/ghee" },
-    { label: "Sundarban Wax", href: "/category/wax" },
-    { label: "Seasonals", href: "/category/seasonal" },
-  ],
-  protection: [
-    { label: "Shipping Policy", href: "/shipping" },
-    { label: "Terms of Harvest", href: "/terms" },
-    { label: "Privacy Core", href: "/privacy" },
-    { label: "Refund Rituals", href: "/refund" },
-  ]
-};
+import { MapPin, Phone, Mail } from "lucide-react";
+import { footerData } from "@/lib/footer.data";
 
 export default function Footer() {
-  return (
-    <footer className="bg-[var(--surface-2)] text-[var(--text)] pt-24 pb-12 overflow-hidden border-t border-[var(--border)]">
-      <div className="max-w-7xl mx-auto px-6">
+  const { brand, contact, socials, appDownloads, linkColumns, paymentMethods, verifiedBadge, copyrightName } = footerData;
+  const year = new Date().getFullYear();
 
-        {/* Top Section */}
-        <div className="grid lg:grid-cols-12 gap-16 mb-24 pb-24 border-b border-[var(--border)]">
-          <div className="lg:col-span-12 xl:col-span-5">
-            <Link href="/" className="flex items-center gap-3 mb-8 group">
-              <div className="w-12 h-12 rounded-2xl bg-[var(--primary)] flex items-center justify-center text-white text-2xl font-black shadow-lg shadow-[var(--primary)]/20 transition-transform group-hover:rotate-6">H</div>
-              <span className="font-black text-3xl tracking-tighter uppercase text-[var(--text)]">HARVEST</span>
+  return (
+    <footer style={{ background: "var(--surface)", color: "var(--text)", borderTop: "1px solid var(--border)" }}>
+
+      {/* ── Top Section ────────────────────────────────── */}
+      <div className="page-container py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-8">
+
+          {/* Column 1: Brand */}
+          <div>
+            {/* Logo */}
+            <Link href="/" className="inline-flex items-center gap-2 mb-5">
+              <div
+                className="w-10 h-10 rounded-lg flex items-center justify-center font-black text-xl"
+                style={{ background: "var(--accent)", color: "white" }}
+              >
+                D
+              </div>
+              <div className="leading-none">
+                <span className="font-black text-xl tracking-tight" style={{ color: "var(--text)" }}>{brand.name}</span>
+                <span className="font-bold text-sm" style={{ color: "var(--accent)" }}>{brand.wordmark}</span>
+              </div>
             </Link>
-            <p className="text-xl font-bold text-[var(--text-muted)] leading-relaxed mb-10 max-w-sm">
-              Cultivating the intersection of traditional purity and modern wellness directly from the hearts of Bangladeshi farms.
+
+            {/* Description */}
+            <p className="text-sm leading-relaxed mb-5 max-w-xs" style={{ color: "var(--text-muted)" }}>
+              {brand.description}
             </p>
-            <div className="flex gap-4">
-              {[
-                { Icon: FacebookIcon, label: "Facebook" },
-                { Icon: InstagramIcon, label: "Instagram" },
-                { Icon: YoutubeIcon, label: "YouTube" },
-              ].map(({ Icon, label }) => (
-                <a key={label} href="#" className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[var(--surface)] border border-[var(--border)] transition-all hover:bg-[var(--primary)] hover:text-white hover:-translate-y-1 group group-hover:shadow-xl" aria-label={label}>
-                  <Icon />
+
+            {/* Contact */}
+            <ul className="space-y-2.5 mb-5">
+              <li>
+                <p className="flex items-start gap-2.5 text-sm" style={{ color: "var(--text-muted)" }}>
+                  <MapPin size={15} className="shrink-0 mt-0.5" style={{ color: "var(--accent)" }} />
+                  {contact.address}
+                </p>
+              </li>
+              <li>
+                <a
+                  href={contact.phoneHref}
+                  className="flex items-center gap-2.5 text-sm transition-colors hover:opacity-100"
+                  style={{ color: "var(--text-muted)" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
+                >
+                  <Phone size={15} style={{ color: "var(--accent)" }} />
+                  {contact.phone}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${contact.email}`}
+                  className="flex items-center gap-2.5 text-sm transition-colors"
+                  style={{ color: "var(--text-muted)" }}
+                  onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
+                  onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
+                >
+                  <Mail size={15} style={{ color: "var(--accent)" }} />
+                  {contact.email}
+                </a>
+              </li>
+            </ul>
+
+            {/* Social icons */}
+            <div className="flex gap-3 mb-6">
+              {socials.map(({ name, href, Icon }) => (
+                <a
+                  key={name}
+                  href={href}
+                  aria-label={name}
+                  className="w-9 h-9 rounded-full flex items-center justify-center transition-all hover:-translate-y-0.5"
+                  style={{ background: "var(--primary-soft)", color: "var(--primary)" }}
+                >
+                  <Icon size={17} />
                 </a>
               ))}
             </div>
           </div>
 
-          <div className="lg:col-span-12 xl:col-span-7">
-            <div className="bg-[var(--surface)] p-8 md:p-12 rounded-[3.5rem] border border-[var(--border)] relative overflow-hidden group shadow-2xl shadow-black/5">
-              <h3 className="text-3xl font-black mb-4 relative z-10 tracking-tighter">Stay Connected to <span className="text-[var(--primary)]">The Roots.</span></h3>
-              <p className="text-lg font-medium text-[var(--text-muted)] mb-8 relative z-10">Exclusive access to seasonal harvests and farm insights.</p>
+          {/* Columns 2–5: Link columns */}
+          {linkColumns.map((col) => (
+            <nav key={col.heading} aria-label={col.ariaLabel}>
+              <h4
+                className="font-bold text-sm uppercase tracking-wider mb-4"
+                style={{ color: "var(--accent)" }}
+              >
+                {col.heading}
+              </h4>
+              <ul className="space-y-2.5">
+                {col.links.map((link) => (
+                  <li key={link.label}>
+                    <Link
+                      href={link.href}
+                      className="text-sm transition-colors"
+                      style={{ color: "var(--text-muted)" }}
+                      onMouseEnter={e => (e.currentTarget.style.color = "var(--text)")}
+                      onMouseLeave={e => (e.currentTarget.style.color = "var(--text-muted)")}
+                    >
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          ))}
 
-              <form className="relative flex flex-col md:flex-row gap-3 relative z-10" onSubmit={e => e.preventDefault()}>
-                <input type="email" placeholder="Enlighten us with your email..." className="flex-1 h-14 rounded-2xl px-6 bg-[var(--surface-2)] border border-[var(--border)] font-bold text-sm outline-none focus:border-[var(--primary)] transition-all" />
-                <button className="h-14 px-8 rounded-2xl bg-[var(--primary)] text-white font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-[var(--primary-hover)] transition-all flex items-center justify-center gap-2">
-                  Subscribe <Send size={14} />
-                </button>
-              </form>
+        </div>
+      </div>
+
+      {/* ── Bottom Bar ─────────────────────────────────── */}
+      <div style={{ borderTop: "1px solid var(--border)" }}>
+        <div className="page-container py-4">
+          <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-center justify-between gap-4">
+
+            {/* Copyright */}
+            <p className="text-xs whitespace-nowrap shrink-0 order-1" style={{ color: "var(--text-muted)" }}>
+              Copyright © {year} {copyrightName} — All Rights Reserved
+            </p>
+
+        
+
+            {/* SSL badge */}
+            <div className="shrink-0 order-2 sm:order-3">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={verifiedBadge.src}
+                alt={verifiedBadge.alt}
+                className="h-28 w-auto object-contain"
+                onError={(e) => {
+                  const el = e.target as HTMLImageElement;
+                  el.style.display = "none";
+                  const fb = el.nextElementSibling as HTMLElement | null;
+                  if (fb) fb.style.display = "inline-flex";
+                }}
+              />
+              <span
+                className="hidden text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded"
+                style={{ background: "var(--primary-soft)", color: "var(--primary)" }}
+              >
+                {verifiedBadge.alt}
+              </span>
             </div>
-          </div>
-        </div>
 
-        {/* Links Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-12 mb-24">
-          <div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--primary)] mb-8">Contacts</h4>
-            <ul className="space-y-6">
-              <li className="flex gap-3 text-sm font-bold text-[var(--text-muted)]"><MapPin size={18} /> Road 12, Block J, Gulshan-2</li>
-              <li className="flex gap-3 text-sm font-black text-[var(--primary)]">+880 1700-000000</li>
-              <li className="flex gap-3 text-sm font-bold text-[var(--text-muted)]"><Mail size={18} /> purity@harvest.com.bd</li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-muted)] opacity-50 mb-8">The Roots</h4>
-            <ul className="space-y-4">
-              {footLinks.roots.map(l => <li key={l.label}><Link href={l.href} className="text-sm font-black text-[var(--text)] hover:text-[var(--primary)] transition-all">{l.label}</Link></li>)}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-muted)] opacity-50 mb-8">Harvests</h4>
-            <ul className="space-y-4">
-              {footLinks.harvests.map(l => <li key={l.label}><Link href={l.href} className="text-sm font-black text-[var(--text)] hover:text-[var(--primary)] transition-all">{l.label}</Link></li>)}
-            </ul>
-          </div>
-          <div>
-            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--text-muted)] opacity-50 mb-8">Protection</h4>
-            <ul className="space-y-4">
-              {footLinks.protection.map(l => <li key={l.label}><Link href={l.href} className="text-sm font-black text-[var(--text)] hover:text-[var(--primary)] transition-all">{l.label}</Link></li>)}
-            </ul>
-          </div>
-        </div>
-
-        {/* Bottom Bar */}
-        <div className="pt-12 border-t border-[var(--border)] flex flex-col md:flex-row justify-between items-center gap-6 opacity-40 grayscale group hover:opacity-100 hover:grayscale-0 transition-all duration-700">
-          <p className="text-[10px] font-black uppercase tracking-widest">© 2026 Harvest Organic. All Harvests Reserved.</p>
-          <div className="flex gap-6">
-            {["SSL Secure", "bKash", "Nagad", "Visa", "Mastercard"].map(p => <span key={p} className="text-[9px] font-black uppercase tracking-widest">{p}</span>)}
           </div>
         </div>
       </div>
+
     </footer>
   );
 }

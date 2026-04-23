@@ -2,13 +2,14 @@ import Header from "@/components/shop/Header";
 import Footer from "@/components/shop/Footer";
 import CartDrawer from "@/components/shop/CartDrawer";
 import FloatingActions from "@/components/shop/FloatingActions";
+import FloatingCart from "@/components/shop/FloatingCart";
 
 export default function ShopLayout({ children }: { children: React.ReactNode }) {
-  return (
+  return ( 
     <div className="min-h-screen flex flex-col" style={{ background: "var(--bg)" }}>
       <Header />
       <CartDrawer />
-      <FloatingActions />
+      <FloatingCart />
       <main className="flex-1">{children}</main>
       <Footer />
     </div>

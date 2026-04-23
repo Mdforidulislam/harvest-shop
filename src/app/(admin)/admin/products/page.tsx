@@ -25,7 +25,7 @@ export default function AdminProductsPage() {
   }
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-8 pb-20">
+    <div className="admin-container space-y-8 pb-20">
 
       {/* Editorial Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

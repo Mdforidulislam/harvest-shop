@@ -47,7 +47,7 @@ export default function AdminOrdersPage() {
   const counts: Record<string, number> = { all: orders.length, ...Object.fromEntries(Object.keys(statusCfg).map((s) => [s, orders.filter((o) => o.status === s).length])) };
 
   return (
-    <div className="max-w-[1600px] mx-auto space-y-8 pb-20">
+    <div className="admin-container space-y-8 pb-20">
 
       {/* Header with Stats Overview */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

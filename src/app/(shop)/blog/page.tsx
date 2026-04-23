@@ -23,7 +23,7 @@ export default function BlogListingPage() {
   const [featured, ...rest] = blogPosts;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-16 md:py-24">
+    <div className="page-container py-16 md:py-24">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
         <motion.div

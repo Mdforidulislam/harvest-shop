@@ -35,7 +35,7 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 z-[110] h-full w-full max-w-md flex flex-col bg-white shadow-[0_0_100px_rgba(0,0,0,0.2)]"
+            className="fixed right-0 top-0 z-[110] h-full w-full max-w-md flex flex-col bg-[var(--surface)] shadow-[0_0_100px_rgba(0,0,0,0.2)]"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-8 py-8 border-b border-black/5">
@@ -113,7 +113,7 @@ export default function CartDrawer() {
                           <div className="flex items-center bg-[var(--surface-2)] p-1 rounded-xl h-9 w-24 border border-black/5">
                             <button
                               onClick={() => dispatch(updateQty({ id: item.id, variant: item.variant, qty: item.qty - 1 }))}
-                              className="flex-1 h-full flex items-center justify-center hover:bg-white rounded-lg transition-all disabled:opacity-20"
+                              className="flex-1 h-full flex items-center justify-center hover:bg-[var(--surface-2)] rounded-lg transition-all disabled:opacity-20"
                               disabled={item.qty <= 1}
                             >
                               <Minus size={12} />
@@ -121,7 +121,7 @@ export default function CartDrawer() {
                             <span className="w-6 text-center text-xs font-black">{item.qty}</span>
                             <button
                               onClick={() => dispatch(updateQty({ id: item.id, variant: item.variant, qty: item.qty + 1 }))}
-                              className="flex-1 h-full flex items-center justify-center hover:bg-white rounded-lg transition-all disabled:opacity-20"
+                              className="flex-1 h-full flex items-center justify-center hover:bg-[var(--surface-2)] rounded-lg transition-all disabled:opacity-20"
                               disabled={item.qty >= item.stock}
                             >
                               <Plus size={12} />
@@ -144,7 +144,7 @@ export default function CartDrawer() {
                   <span className="text-2xl font-black text-[var(--text)]">{formatPrice(total)}</span>
                 </div>
 
-                <div className="flex items-center gap-2 p-4 bg-white rounded-2xl border border-black/5 mb-6">
+                <div className="flex items-center gap-2 p-4 bg-[var(--surface-2)] rounded-2xl border border-[var(--border)] mb-6">
                   <Sparkles size={16} className="text-[var(--primary)]" />
                   <p className="text-[10px] font-bold opacity-60">You are eligible for <span className="font-black text-[var(--primary)]">Special Gifting</span> on this harvest.</p>
                 </div>
@@ -160,7 +160,7 @@ export default function CartDrawer() {
                   <Link
                     href="/cart"
                     onClick={() => dispatch(setDrawerOpen(false))}
-                    className="h-16 rounded-[1.5rem] bg-white border border-black/10 text-[var(--text)] font-black text-sm flex items-center justify-center hover:bg-[var(--surface-2)] transition-all"
+                    className="h-16 rounded-[1.5rem] bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] font-black text-sm flex items-center justify-center hover:bg-[var(--surface)] transition-all"
                   >
                     View Basket Rituals
                   </Link>

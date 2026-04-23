@@ -109,7 +109,7 @@ export default function CategoryPage({ params }: Props) {
 
       {/* Editorial Category Banner */}
       <div className="bg-[var(--primary)] text-white py-20 md:py-32 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="page-container relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -138,7 +138,7 @@ export default function CategoryPage({ params }: Props) {
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-white/5 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/2" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 -mt-16 relative z-20">
+      <div className="page-container -mt-16 relative z-20">
         <div className="flex flex-col lg:flex-row gap-10">
 
           {/* Sidebar */}

@@ -25,7 +25,7 @@ const maxRevenue = Math.max(...monthlyRevenue.map(m => m.revenue));
 
 export default function AnalyticsPage() {
   return (
-    <div className="max-w-[1600px] mx-auto space-y-10 pb-20">
+    <div className="admin-container space-y-10 pb-20">
 
       {/* Editorial Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">

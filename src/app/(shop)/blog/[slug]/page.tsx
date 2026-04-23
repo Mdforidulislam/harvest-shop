@@ -79,7 +79,7 @@ export default function BlogPostPage({ params }: Props) {
       </section>
 
       {/* Article Content Area */}
-      <div className="max-w-7xl mx-auto px-4 py-20 flex flex-col lg:flex-row gap-16">
+      <div className="page-container py-20 flex flex-col lg:flex-row gap-16">
 
         {/* Sidebar Left: Share Tools */}
         <aside className="hidden lg:block w-16 sticky top-32 h-fit">

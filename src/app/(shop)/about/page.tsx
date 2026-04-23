@@ -81,7 +81,7 @@ export default function AboutPage() {
       </section>
 
       {/* Origin Story */}
-      <section className="max-w-7xl mx-auto px-4 py-32 md:py-48">
+      <section className="page-container py-32 md:py-48">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -106,7 +106,7 @@ export default function AboutPage() {
                   &quot;Success doesn&apos;t mean profit anymore. It means the 15,000 families who trust us with their health every day.&quot;
                 </p>
                 <div className="mt-6 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full overflow-hidden bg-white">
+                  <div className="w-12 h-12 rounded-full overflow-hidden bg-[var(--surface)]">
                     <Image src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop" alt="Ariful Islam" width={48} height={48} />
                   </div>
                   <div>
@@ -137,7 +137,7 @@ export default function AboutPage() {
             <div className="absolute -top-10 -left-10 w-64 h-64 bg-[var(--primary)]/10 rounded-full blur-[100px]" />
 
             {/* Badge Overlay */}
-            <div className="absolute -bottom-6 -left-6 bg-white p-6 rounded-[2rem] shadow-2xl z-20 border border-[var(--border)] max-w-[180px]">
+            <div className="absolute -bottom-6 -left-6 bg-[var(--surface)] p-6 rounded-[2rem] shadow-2xl z-20 border border-[var(--border)] max-w-[180px]">
               <div className="flex items-center gap-2 mb-2">
                 <Star size={16} fill="var(--warning)" className="text-warning" />
                 <Star size={16} fill="var(--warning)" className="text-warning" />
@@ -151,7 +151,7 @@ export default function AboutPage() {
 
       {/* Values Section */}
       <section className="py-32" style={{ background: "var(--surface-2)" }}>
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="page-container">
           <div className="text-center mb-20">
             <h2 className="text-4xl md:text-6xl font-black mb-4">Our Core Rituals</h2>
             <p className="text-lg font-bold opacity-60 max-w-xl mx-auto">These aren&apos;t just values; they are daily rituals that define our purity.</p>
@@ -164,7 +164,7 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: idx * 0.1 }}
-                className="group flex flex-col p-10 rounded-[3rem] bg-white border border-[var(--border)] hover:shadow-2xl hover:shadow-black/5 transition-all hover:-translate-y-2"
+                className="group flex flex-col p-10 rounded-[3rem] bg-[var(--surface)] border border-[var(--border)] hover:shadow-2xl hover:shadow-black/5 transition-all hover:-translate-y-2"
               >
                 <div className="w-16 h-16 rounded-[1.5rem] bg-[var(--primary-soft)] flex items-center justify-center mb-8 group-hover:rotate-6 transition-transform">
                   <Icon size={32} className="text-[var(--primary)]" />
@@ -205,7 +205,7 @@ export default function AboutPage() {
                 )}
               </div>
 
-              <div className="relative z-10 w-16 h-16 rounded-full bg-white border-8 border-[var(--primary-soft)] flex items-center justify-center shadow-2xl flex-shrink-0">
+              <div className="relative z-10 w-16 h-16 rounded-full bg-[var(--surface)] border-8 border-[var(--primary-soft)] flex items-center justify-center shadow-2xl flex-shrink-0">
                 <div className="w-4 h-4 rounded-full bg-[var(--primary)]" />
               </div>
 
@@ -224,7 +224,7 @@ export default function AboutPage() {
 
       {/* Team Section */}
       <section className="py-32 relative overflow-hidden" style={{ background: "var(--surface)" }}>
-        <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="page-container relative z-10">
           <div className="text-center mb-24">
             <h2 className="text-4xl md:text-6xl font-black mb-6">Faces Behind the Basket</h2>
             <p className="text-lg font-bold opacity-60">Passionate humans dedicated to your well-being.</p>
@@ -259,7 +259,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="max-w-7xl mx-auto px-4 py-32 md:py-48 text-center">
+      <section className="page-container py-32 md:py-48 text-center">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           whileInView={{ opacity: 1, scale: 1 }}

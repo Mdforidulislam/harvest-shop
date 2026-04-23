@@ -14,7 +14,7 @@ export default function WishlistPage() {
   const wishlistProducts = wishlistItems.map((i) => products.find((p) => p.id === i.id)).filter(Boolean);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="page-container py-8">
       <h1 className="text-2xl font-bold mb-2" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>My Wishlist</h1>
       <p className="text-sm mb-6" style={{ color: "var(--text-muted)" }}>{wishlistProducts.length} saved items</p>
 
