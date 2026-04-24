@@ -60,7 +60,7 @@ function ReviewCard({ review }: { review: Review }) {
 
 export default function CustomerReviews() {
   return (
-    <section aria-label="Customer reviews" className="page-container py-10">
+    <section aria-label="Customer reviews" className="page-container py-6 md:py-10">
       {/* Section header */}
       <div className="flex items-center gap-3 mb-8">
         <div className="w-1 h-7 rounded-full" style={{ background: "var(--accent)" }} />
