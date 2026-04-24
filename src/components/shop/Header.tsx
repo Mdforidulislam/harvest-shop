@@ -88,7 +88,7 @@ export default function Header() {
             </Link>
           </div>
 
-          {/* Center: Search */}
+          {/* Center: Search — hidden on mobile (shown in second row instead) */}
           <div className="w-full max-w-2xl relative hidden md:block">
             <input
               type="text"
@@ -166,22 +166,39 @@ export default function Header() {
           </div>
         </div>
 
-        {/* ── Row 3: Category nav ─────────────────── */}
-        <div className="hidden lg:block border-t border-[var(--border)]" style={{ background: "var(--primary)" }}>
+        {/* ── Row 2b: Mobile search bar ─────────────────── */}
+        <div className="block md:hidden px-4 pb-2">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full h-11 pl-4 pr-12 rounded-lg border text-sm focus:outline-none transition-colors border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--primary)]"
+            />
+            <button
+              className="absolute right-0 top-0 h-11 w-12 flex items-center justify-center rounded-r-lg text-white"
+              style={{ background: "var(--accent)" }}
+            >
+              <Search size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* ── Row 3: Category nav (desktop full, tablet scrollable) ─────────────────── */}
+        <div className="hidden sm:block lg:block border-t border-[var(--border)]" style={{ background: "var(--primary)" }}>
           <div className="page-container">
-            <nav className="flex items-center gap-1">
+            <nav className="flex items-center gap-1 overflow-x-auto scrollbar-none">
               <Link
                 href="/category/all"
-                className="flex items-center gap-2 pr-4 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/10 transition-colors"
+                className="flex items-center gap-2 pr-4 py-3 text-xs font-bold uppercase tracking-wider text-white hover:bg-white/10 transition-colors whitespace-nowrap shrink-0"
               >
                 All Categories
               </Link>
-              <span className="text-white/20 text-sm">|</span>
+              <span className="text-white/20 text-sm shrink-0">|</span>
               {categories.map((c) => (
                 <Link
                   key={c.id}
                   href={`/category/${c.slug}`}
-                  className="px-4 py-3 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap"
+                  className="px-4 py-3 text-xs font-semibold text-white/80 hover:text-white hover:bg-white/10 transition-colors whitespace-nowrap shrink-0"
                 >
                   {c.name}
                 </Link>
