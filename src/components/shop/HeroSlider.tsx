@@ -52,7 +52,7 @@ export default function HeroSlider() {
   };
 
   return (
-    <div className="">
+    <div className=" py-4">
       <div className="flex flex-col lg:flex-row gap-4 lg:items-stretch">
 
         {/* ── Left: Slider ── */}
@@ -169,7 +169,7 @@ export default function HeroSlider() {
               </div>
 
               {/* ── RIGHT: Product collage + 3D floating blocks ── */}
-              <div className="relative flex items-center justify-center h-[260px] md:h-full py-6 md:py-0 overflow-hidden">
+              <div className="relative flex items-center justify-center md:h-full pt-4 pb-14 sm:pb-12 md:py-0 overflow-hidden">
                 {/* Large tilted accent block behind image */}
                 <div
                   className="absolute rounded-2xl"

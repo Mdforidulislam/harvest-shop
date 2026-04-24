@@ -19,6 +19,11 @@ export type Product = {
   isBestSeller?: boolean;
   variants?: { label: string; price: number; stock: number }[];
   specs: Record<string, string>;
+  brand?: { name: string; logo?: string };
+  whatsappNumber?: string;
+  callNumber?: string;
+  infoBullets?: string[];
+  videoUrl?: string;
 };
 
 export type Category = {
@@ -70,13 +75,17 @@ export type Review = {
 
 /* ─── Categories ─────────────────────────────────────── */
 export const categories: Category[] = [
-  { id: "1", name: "Mustard Oil", nameBn: "সরিষার তেল", slug: "mustard-oil", icon: "🫙", image: "https://images.unsplash.com/photo-1616164222019-354da22cba2b?w=300&h=300&fit=crop", count: 18 },
-  { id: "2", name: "Pure Ghee", nameBn: "ঘি", slug: "ghee", icon: "🧈", image: "https://images.unsplash.com/photo-1589733923547-84041783cf3a?w=300&h=300&fit=crop", count: 12 },
-  { id: "3", name: "Raw Honey", nameBn: "মধু", slug: "honey", icon: "🍯", image: "https://images.unsplash.com/photo-1558642891-54be180ea339?w=300&h=300&fit=crop", count: 15 },
-  { id: "4", name: "Dates", nameBn: "খেজুর", slug: "dates", icon: "🌴", image: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=300&h=300&fit=crop", count: 10 },
+  { id: "1", name: "Mustard Oil", nameBn: "সরিষার তেল", slug: "mustard-oil", icon: "🫙", image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=300&h=300&fit=crop", count: 18 },
+  { id: "2", name: "Pure Ghee", nameBn: "ঘি", slug: "ghee", icon: "🧈", image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=300&h=300&fit=crop", count: 12 },
+  { id: "3", name: "Raw Honey", nameBn: "মধু", slug: "honey", icon: "🍯", image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=300&h=300&fit=crop", count: 15 },
+  { id: "4", name: "Dates", nameBn: "খেজুর", slug: "dates", icon: "🌴", image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=300&h=300&fit=crop", count: 10 },
   { id: "5", name: "Mixed Nuts", nameBn: "বাদাম", slug: "nuts", icon: "🥜", image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?w=300&h=300&fit=crop", count: 22 },
   { id: "6", name: "Herbal Tea", nameBn: "চা", slug: "tea", icon: "🍵", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=300&h=300&fit=crop", count: 9 },
   { id: "7", name: "Spices", nameBn: "মশলা", slug: "spices", icon: "🌶️", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&h=300&fit=crop", count: 30 },
+  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
+  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
+  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
+  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
   { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
 ];
 
@@ -93,8 +102,20 @@ export const products: Product[] = [
     description: "Our Sundarban Pure Honey is harvested by indigenous bee-farmers...",
     tags: ["honey", "organic", "sundarban", "raw"],
     featured: true, isBestSeller: true,
-    variants: [{ label: "500g", price: 720, stock: 34 }],
-    specs: { Origin: "Sundarban, Bangladesh" },
+    variants: [{ label: "250g", price: 420, stock: 18 }, { label: "500g", price: 720, stock: 34 }, { label: "1kg", price: 1350, stock: 10 }],
+    specs: { Origin: "Sundarban, Bangladesh", Type: "Raw & Unfiltered", Color: "Amber", Texture: "Thick", "Harvest Season": "Oct–Dec" },
+    brand: { name: "Drovo Naturals" },
+    whatsappNumber: "+8801700000000",
+    callNumber: "+8801700000000",
+    infoBullets: [
+      "100% Pure & Raw — No additives, heating, or filtration",
+      "Direct from Sundarban — Harvested by indigenous bee-farmers",
+      "Lab Tested & Certified — Quality verified by BSTI",
+      "Ships in sealed glass jar — Freshness & purity guaranteed",
+      "Rich in antioxidants — Natural enzymes fully intact",
+      "7-day hassle-free return policy",
+    ],
+    videoUrl: "https://www.youtube.com/embed/ScMzIvxBSi4",
   },
   {
     id: "p1_2", slug: "lichu-honey-500g",
@@ -134,7 +155,18 @@ export const products: Product[] = [
     tags: ["ghee", "deshi", "bilona"],
     featured: true, isBestSeller: true,
     isNew: true,
-    specs: { Origin: "Rajshahi, Bangladesh" },
+    specs: { Origin: "Rajshahi, Bangladesh", Method: "Traditional Bilona", Source: "Deshi Cow Milk", "Fat Content": "99.8%" },
+    brand: { name: "Drovo Organics" },
+    whatsappNumber: "+8801700000000",
+    callNumber: "+8801700000000",
+    infoBullets: [
+      "Made via traditional Bilona method — hand-churned from curd",
+      "100% Pure Deshi Cow Milk — no buffalo or powder mix",
+      "Rich in Vitamins A, D, E & K2",
+      "No preservatives, colorants, or artificial flavors",
+      "Ships in airtight glass jar — aroma & nutrients preserved",
+      "7-day easy return policy",
+    ],
   },
   {
     id: "p3_2", slug: "buffalo-ghee-500g",
@@ -244,7 +276,11 @@ export const blogPosts: BlogPost[] = [
 
 /* ─── Reviews ─────────────────────────────────────────── */
 export const reviews: Review[] = [
-  { id: "r1", productId: "p1", author: "Rabeya Khatun", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop", rating: 5, date: "2026-03-20", comment: "Absolutely genuine honey!", verified: true, featured: true },
+  { id: "r1", productId: "p1", author: "Rabeya Khatun", avatar: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=80&h=80&fit=crop", rating: 5, date: "2026-03-20", comment: "Absolutely genuine honey! The taste is so pure and the aroma is amazing. Will definitely order again.", verified: true, featured: true },
+  { id: "r2", productId: "p1", author: "Mohammad Hasan", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&h=80&fit=crop", rating: 5, date: "2026-04-01", comment: "Best honey I've ever tasted. Very fresh and you can feel the natural sweetness. Highly recommended!", verified: true },
+  { id: "r3", productId: "p1", author: "Nasrin Akter", avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&h=80&fit=crop", rating: 4, date: "2026-04-10", comment: "Excellent quality, packaging was very secure. Slight delay in delivery but overall a great product.", verified: true },
+  { id: "r4", productId: "p3", author: "Karim Uddin", avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&h=80&fit=crop", rating: 5, date: "2026-04-05", comment: "Authentic deshi ghee — the aroma when cooking is incredible. Pure product, no adulteration.", verified: true },
+  { id: "r5", productId: "p3", author: "Sumaiya Islam", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&h=80&fit=crop", rating: 5, date: "2026-04-12", comment: "Exactly like homemade ghee from my childhood. Beautiful golden color and authentic taste.", verified: true },
 ];
 
 /* ─── Orders ────────────────────────── */

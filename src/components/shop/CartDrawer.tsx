@@ -1,8 +1,9 @@
 "use client";
-import { X, ShoppingCart, Plus, Minus, Trash2, ArrowRight, ShoppingBag, Sparkles } from "lucide-react";
+import { X, ShoppingCart, Plus, Minus, ArrowRight, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppDispatch";
 import {
   selectCartItems, selectCartTotal, selectDrawerOpen,
@@ -10,11 +11,27 @@ import {
 } from "@/features/cart/cartSlice";
 import { formatPrice } from "@/lib/utils";
 
+// Mock related products — replace with real data/props as needed
+const relatedProducts = [
+  { id: "r1", name: "Sundarban Honey 15g X 24 pcs (BOX)", price: 768, image: "/images/honey-box.jpg" },
+  { id: "r2", name: "Pure Deshi Ghee 500ml", price: 950, image: "/images/ghee-500.jpg" },
+  { id: "r3", name: "Organic Mustard Oil 1L", price: 420, image: "/images/mustard-1l.jpg" },
+  { id: "r4", name: "Ajwa Dates 500g", price: 1100, image: "/images/dates-500.jpg" },
+];
+
 export default function CartDrawer() {
   const dispatch = useAppDispatch();
   const open = useAppSelector(selectDrawerOpen);
   const items = useAppSelector(selectCartItems);
   const total = useAppSelector(selectCartTotal);
+  const sliderRef = useRef<HTMLDivElement>(null);
+
+  function slideLeft() {
+    sliderRef.current?.scrollBy({ left: -180, behavior: "smooth" });
+  }
+  function slideRight() {
+    sliderRef.current?.scrollBy({ left: 180, behavior: "smooth" });
+  }
 
   return (
     <AnimatePresence>
@@ -25,7 +42,7 @@ export default function CartDrawer() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] bg-black/50"
             onClick={() => dispatch(setDrawerOpen(false))}
           />
 
@@ -35,139 +52,248 @@ export default function CartDrawer() {
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", damping: 30, stiffness: 300 }}
-            className="fixed right-0 top-0 z-[110] h-full w-full max-w-md flex flex-col bg-[var(--surface)] shadow-[0_0_100px_rgba(0,0,0,0.2)]"
+            className="fixed right-0 top-0 z-[110] h-full w-full flex flex-col"
+            style={{ maxWidth: 420, background: "#fff" }}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-8 py-8 border-b border-black/5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[var(--primary-soft)] flex items-center justify-center text-[var(--primary)]">
-                  <ShoppingBag size={20} />
-                </div>
-                <div>
-                  <h2 className="font-black text-xl tracking-tight" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>
-                    Harvest Basket
-                  </h2>
-                  <p className="text-[10px] font-black uppercase tracking-widest opacity-40">{items.length} Goodies Selected</p>
-                </div>
-              </div>
+            <div
+              className="flex items-center justify-between px-4 py-3 border-b"
+              style={{ borderColor: "#e5e7eb" }}
+            >
+              <span
+                className="text-sm font-black uppercase tracking-widest"
+                style={{ color: "#111" }}
+              >
+                SHOPPING CART
+              </span>
               <button
                 onClick={() => dispatch(setDrawerOpen(false))}
-                className="w-12 h-12 rounded-2xl flex items-center justify-center bg-[var(--surface-2)] hover:bg-[var(--primary-soft)] hover:text-[var(--primary)] transition-all active:scale-95"
+                className="flex items-center gap-1 text-sm font-bold transition-opacity hover:opacity-70"
+                style={{ color: "#111" }}
               >
-                <X size={20} />
+                Close <ArrowRight size={15} />
               </button>
             </div>
 
-            {/* Items */}
-            <div className="flex-1 overflow-y-auto px-8 py-6 space-y-6 scrollbar-none">
-              <AnimatePresence initial={false}>
-                {items.length === 0 ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="flex flex-col items-center justify-center h-full gap-8 text-center"
+            {/* Items list */}
+            <div className="flex-1 overflow-y-auto" style={{ minHeight: 0 }}>
+              {items.length === 0 ? (
+                <div className="flex flex-col items-center justify-center h-full gap-4 px-8 text-center">
+                  <ShoppingCart size={48} style={{ color: "#ccc" }} />
+                  <p className="text-sm font-bold" style={{ color: "#888" }}>
+                    Your cart is empty
+                  </p>
+                  <Link
+                    href="/category/all"
+                    onClick={() => dispatch(setDrawerOpen(false))}
+                    className="px-6 py-2 rounded text-sm font-bold text-white"
+                    style={{ background: "#e07a2a" }}
                   >
-                    <div className="w-32 h-32 rounded-[3.5rem] bg-[var(--surface-2)] flex items-center justify-center shadow-inner">
-                      <ShoppingCart size={48} className="opacity-10 text-[var(--text)]" />
-                    </div>
-                    <div>
-                      <p className="text-xl font-black mb-2 leading-tight">Your basket is empty of harvests.</p>
-                      <p className="text-sm font-bold opacity-40 max-w-[200px] mx-auto">Start exploring our organic fields to find something special.</p>
-                    </div>
-                    <Link
-                      href="/category/all"
-                      onClick={() => dispatch(setDrawerOpen(false))}
-                      className="h-14 px-10 rounded-2xl bg-[var(--primary)] text-white font-black flex items-center justify-center gap-2 shadow-2xl shadow-green-900/40 hover:scale-105 transition-all active:scale-95"
-                    >
-                      Explore Farm
-                    </Link>
-                  </motion.div>
-                ) : (
-                  items.map((item) => (
+                    Shop Now
+                  </Link>
+                </div>
+              ) : (
+                <AnimatePresence initial={false}>
+                  {items.map((item) => (
                     <motion.div
                       key={`${item.id}-${item.variant}`}
                       layout
                       initial={{ opacity: 0, x: 20 }}
                       animate={{ opacity: 1, x: 0 }}
                       exit={{ opacity: 0, x: 50 }}
-                      className="flex gap-4 group"
+                      className="flex items-center gap-3 px-4 py-3 border-b"
+                      style={{ borderColor: "#f0f0f0" }}
                     >
-                      <div className="relative w-24 h-24 rounded-2xl overflow-hidden flex-shrink-0 bg-[var(--surface-2)] shadow-inner">
-                        <Image src={item.image} alt={item.name} fill className="object-cover transition-transform group-hover:scale-110" sizes="96px" />
+                      {/* Product image */}
+                      <div
+                        className="relative shrink-0 rounded"
+                        style={{ width: 64, height: 64, background: "#f9f9f9", border: "1px solid #eee" }}
+                      >
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fill
+                          className="object-contain p-1"
+                          sizes="64px"
+                        />
                       </div>
-                      <div className="flex-1 flex flex-col justify-between py-1">
-                        <div>
-                          <div className="flex justify-between items-start gap-2">
-                            <h3 className="text-sm font-black text-[var(--text)] leading-tight group-hover:text-[var(--primary)] transition-colors line-clamp-1">{item.name}</h3>
-                            <button
-                              onClick={() => dispatch(removeFromCart({ id: item.id, variant: item.variant }))}
-                              className="text-[var(--danger)] hover:scale-110 transition-transform p-1 opacity-0 group-hover:opacity-100"
-                            >
-                              <Trash2 size={16} />
-                            </button>
-                          </div>
-                          <p className="text-[10px] font-black uppercase tracking-widest opacity-40 mt-1">{item.variant || "Natural Size"}</p>
-                        </div>
 
-                        <div className="flex items-center justify-between mt-auto">
-                          <div className="flex items-center bg-[var(--surface-2)] p-1 rounded-xl h-9 w-24 border border-black/5">
-                            <button
-                              onClick={() => dispatch(updateQty({ id: item.id, variant: item.variant, qty: item.qty - 1 }))}
-                              className="flex-1 h-full flex items-center justify-center hover:bg-[var(--surface-2)] rounded-lg transition-all disabled:opacity-20"
-                              disabled={item.qty <= 1}
-                            >
-                              <Minus size={12} />
-                            </button>
-                            <span className="w-6 text-center text-xs font-black">{item.qty}</span>
-                            <button
-                              onClick={() => dispatch(updateQty({ id: item.id, variant: item.variant, qty: item.qty + 1 }))}
-                              className="flex-1 h-full flex items-center justify-center hover:bg-[var(--surface-2)] rounded-lg transition-all disabled:opacity-20"
-                              disabled={item.qty >= item.stock}
-                            >
-                              <Plus size={12} />
-                            </button>
-                          </div>
-                          <span className="text-base font-black text-[var(--primary)]">{formatPrice(item.price * item.qty)}</span>
+                      {/* Info */}
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className="text-xs font-bold leading-tight line-clamp-1 mb-2"
+                          style={{ color: "#111" }}
+                        >
+                          {item.name.length > 22 ? item.name.slice(0, 22) + ".." : item.name}
+                        </p>
+
+                        {/* Qty controls + price */}
+                        <div className="flex items-center gap-1.5">
+                          {/* Minus */}
+                          <button
+                            onClick={() =>
+                              dispatch(updateQty({ id: item.id, variant: item.variant, qty: item.qty - 1 }))
+                            }
+                            disabled={item.qty <= 1}
+                            className="w-6 h-6 flex items-center justify-center border rounded text-xs font-bold transition-colors hover:bg-gray-100 disabled:opacity-30"
+                            style={{ borderColor: "#ddd", color: "#333" }}
+                          >
+                            -
+                          </button>
+
+                          {/* Qty */}
+                          <span
+                            className="w-6 text-center text-xs font-black"
+                            style={{ color: "#111" }}
+                          >
+                            {item.qty}
+                          </span>
+
+                          {/* Plus */}
+                          <button
+                            onClick={() =>
+                              dispatch(updateQty({ id: item.id, variant: item.variant, qty: item.qty + 1 }))
+                            }
+                            disabled={item.qty >= item.stock}
+                            className="w-6 h-6 flex items-center justify-center border rounded text-xs font-bold transition-colors hover:bg-gray-100 disabled:opacity-30"
+                            style={{ borderColor: "#ddd", color: "#333" }}
+                          >
+                            +
+                          </button>
+
+                          <span className="text-xs" style={{ color: "#555" }}>
+                            × {formatPrice(item.price)} ={" "}
+                            <span className="font-black" style={{ color: "#111" }}>
+                              {formatPrice(item.price * item.qty)}
+                            </span>
+                          </span>
                         </div>
                       </div>
+
+                      {/* Remove */}
+                      <button
+                        onClick={() =>
+                          dispatch(removeFromCart({ id: item.id, variant: item.variant }))
+                        }
+                        className="shrink-0 w-6 h-6 flex items-center justify-center rounded-full transition-colors hover:bg-red-50"
+                        style={{ color: "#aaa" }}
+                      >
+                        <X size={14} />
+                      </button>
                     </motion.div>
-                  ))
-                )}
-              </AnimatePresence>
+                  ))}
+                </AnimatePresence>
+              )}
+
+              {/* You May Also Like */}
+              {items.length > 0 && (
+                <div className="px-4 pt-4 pb-2">
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <p className="text-sm font-black" style={{ color: "#111" }}>
+                        You May Also Like
+                      </p>
+                      <div
+                        className="h-0.5 w-10 mt-0.5 rounded"
+                        style={{ background: "#e07a2a" }}
+                      />
+                    </div>
+                    <div className="flex gap-1.5">
+                      <button
+                        onClick={slideLeft}
+                        className="w-8 h-8 rounded-full flex items-center justify-center border transition-colors hover:bg-orange-50"
+                        style={{ borderColor: "#e07a2a", color: "#e07a2a" }}
+                      >
+                        <ChevronLeft size={15} />
+                      </button>
+                      <button
+                        onClick={slideRight}
+                        className="w-8 h-8 rounded-full flex items-center justify-center border transition-colors hover:bg-orange-50"
+                        style={{ borderColor: "#e07a2a", color: "#e07a2a" }}
+                      >
+                        <ChevronRight size={15} />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Slider */}
+                  <div
+                    ref={sliderRef}
+                    className="flex gap-3 overflow-x-auto scrollbar-none pb-2"
+                    style={{ scrollSnapType: "x mandatory" }}
+                  >
+                    {relatedProducts.map((p) => (
+                      <div
+                        key={p.id}
+                        className="shrink-0 rounded-lg border flex flex-col"
+                        style={{
+                          width: 150,
+                          borderColor: "#eee",
+                          background: "#fff",
+                          scrollSnapAlign: "start",
+                        }}
+                      >
+                        <div
+                          className="relative rounded-t-lg overflow-hidden"
+                          style={{ height: 90, background: "#f9f9f9" }}
+                        >
+                          <Image
+                            src={p.image}
+                            alt={p.name}
+                            fill
+                            className="object-contain p-2"
+                            sizes="150px"
+                          />
+                        </div>
+                        <div className="p-2 flex flex-col gap-1.5">
+                          <p
+                            className="text-[11px] font-semibold leading-tight line-clamp-2"
+                            style={{ color: "#222" }}
+                          >
+                            {p.name}
+                          </p>
+                          <p className="text-xs font-black" style={{ color: "#333" }}>
+                            ৳{p.price.toLocaleString()}.00
+                          </p>
+                          <button
+                            className="w-full py-1 rounded text-[11px] font-bold text-white transition-opacity hover:opacity-80"
+                            style={{ background: "#e07a2a" }}
+                          >
+                            + Add
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Footer */}
             {items.length > 0 && (
-              <div className="p-8 border-t border-black/5 bg-[var(--surface-2)]/30 space-y-4">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-black uppercase tracking-[0.2em] opacity-40">Subtotal Value</span>
-                  <span className="text-2xl font-black text-[var(--text)]">{formatPrice(total)}</span>
+              <div
+                className="px-4 py-4 border-t"
+                style={{ borderColor: "#e5e7eb", background: "#fff" }}
+              >
+                {/* Total */}
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-sm font-black" style={{ color: "#111" }}>
+                    Total:
+                  </span>
+                  <span className="text-base font-black" style={{ color: "#111" }}>
+                    ৳{total.toLocaleString()}.00
+                  </span>
                 </div>
 
-                <div className="flex items-center gap-2 p-4 bg-[var(--surface-2)] rounded-2xl border border-[var(--border)] mb-6">
-                  <Sparkles size={16} className="text-[var(--primary)]" />
-                  <p className="text-[10px] font-bold opacity-60">You are eligible for <span className="font-black text-[var(--primary)]">Special Gifting</span> on this harvest.</p>
-                </div>
-
-                <div className="flex flex-col gap-3">
-                  <Link
-                    href="/checkout"
-                    onClick={() => dispatch(setDrawerOpen(false))}
-                    className="group h-16 rounded-[1.5rem] bg-[var(--primary)] text-white font-black text-lg flex items-center justify-center gap-3 shadow-2xl shadow-green-900/20 active:scale-[0.98] transition-all"
-                  >
-                    Plant Order <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
-                  </Link>
-                  <Link
-                    href="/cart"
-                    onClick={() => dispatch(setDrawerOpen(false))}
-                    className="h-16 rounded-[1.5rem] bg-[var(--surface-2)] border border-[var(--border)] text-[var(--text)] font-black text-sm flex items-center justify-center hover:bg-[var(--surface)] transition-all"
-                  >
-                    View Basket Rituals
-                  </Link>
-                </div>
-                <p className="text-[10px] text-center font-bold opacity-30 px-6 leading-relaxed">
-                  Harvest ensures pesticide-free delivery within 48 hours for regular orders.
-                </p>
+                {/* Checkout button */}
+                <Link
+                  href="/checkout"
+                  onClick={() => dispatch(setDrawerOpen(false))}
+                  className="block w-full py-3.5 rounded text-center text-sm font-black text-white tracking-widest uppercase transition-opacity hover:opacity-90"
+                  style={{ background: "#e07a2a" }}
+                >
+                  CHECKOUT
+                </Link>
               </div>
             )}
           </motion.div>

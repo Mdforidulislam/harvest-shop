@@ -55,20 +55,20 @@ export default function HomePage() {
           </Link>
         </div>
         <Carousel
-          slidesPerView={{ base: 2, sm: 3, md: 4, lg: 5, xl: 6 }}
-          gap={12}
+          slidesPerView={{ base: 4, sm: 5, md: 8, lg: 8, xl: 9 }}
+          gap={10}
           ariaLabel="Product categories"
         >
           {categories.map((cat) => (
             <Link
               key={cat.id}
               href={`/category/${cat.slug}`}
-              className="group flex flex-col items-center gap-2 bg-[var(--surface)] rounded-lg border border-[var(--border)] p-6 hover:border-[var(--accent)] hover:shadow-md transition-all"
+              className="group flex flex-col items-center gap-2 p-2 hover:opacity-90 transition-all bg-[var(--surface-2)] rounded-lg "
             >
-              <div className="relative w-12 h-12 md:w-16 md:h-16">
-                <Image src={cat.image} alt={cat.name} fill className="object-contain group-hover:scale-110 transition-transform duration-200" />
+              <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full overflow-hidden border-2 border-[var(--border)] group-hover:border-[var(--accent)] transition-all shadow-sm bg-[var(--surface-2)] shrink-0">
+                <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-110 transition-transform duration-200" />
               </div>
-              <span className="text-[10px] md:text-xs font-semibold text-center text-[var(--text-muted)] group-hover:text-[var(--primary)] leading-tight">
+              <span className="text-[10px] font-semibold text-center text-[var(--text-muted)] group-hover:text-[var(--primary)] leading-tight line-clamp-2 w-full">
                 {cat.name}
               </span>
             </Link>
