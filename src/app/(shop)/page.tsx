@@ -191,11 +191,11 @@ export default function HomePage() {
       <CustomerReviews />
 
       {/* Newsletter Banner */}
-      <section className="py-12">
-        <div className="rounded-lg p-8 md:p-12 text-center" style={{ background: "var(--primary)" }}>
+      <section className="py-8 md:py-12">
+        <div className="rounded-lg p-6 md:p-12 text-center" style={{ background: "var(--primary)" }}>
           <h2 className="text-2xl md:text-3xl font-black text-white mb-2">Stay Updated!</h2>
           <p className="text-white/70 text-sm mb-6">Subscribe to get the latest deals and new arrivals.</p>
-          <form className="flex gap-3 max-w-md mx-auto" onSubmit={e => e.preventDefault()}>
+          <form className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto" onSubmit={e => e.preventDefault()}>
             <input
               type="email"
               placeholder="Enter your email address"
@@ -203,7 +203,7 @@ export default function HomePage() {
             />
             <button
               type="submit"
-              className="px-6 h-11 rounded-lg font-bold text-white text-sm hover:opacity-90 transition-opacity shrink-0"
+              className="h-11 px-6 rounded-lg font-bold text-white text-sm hover:opacity-90 transition-opacity sm:shrink-0 w-full sm:w-auto"
               style={{ background: "var(--accent)" }}
             >
               Subscribe
