@@ -103,7 +103,7 @@ export default function Carousel({
 
   const arrowCls =
     "absolute top-1/2 -translate-y-1/2 z-10 w-9 h-9 rounded-full " +
-    "flex items-center justify-center transition-all duration-200 " +
+    "hidden sm:flex items-center justify-center transition-all duration-200 " +
     "opacity-0 group-hover:opacity-100 focus-visible:opacity-100 " +
     "[@media(hover:none)]:opacity-100";
 
