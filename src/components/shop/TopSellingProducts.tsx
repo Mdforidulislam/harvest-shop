@@ -39,7 +39,7 @@ function ProductCardHorizontal({ product }: { product: TopProduct }) {
   }
 
   return (
-    <div className="relative flex rounded-lg py-6 bg-[var(--surface)] overflow-hidden transition-shadow duration-300">
+    <div className="relative flex flex-col sm:flex-row rounded-lg py-4 sm:py-6 bg-[var(--surface)] overflow-hidden transition-shadow duration-300">
 
       {/* Badge */}
       {product.badge && (
@@ -52,8 +52,8 @@ function ProductCardHorizontal({ product }: { product: TopProduct }) {
         </div>
       )}
 
-      {/* Left: Image */}
-      <div className="w-[40%] shrink-0 flex items-center justify-center p-4 bg-[var(--surface)]">
+      {/* Image — full width on mobile, 40% on sm+ */}
+      <div className="w-full sm:w-[40%] shrink-0 flex items-center justify-center p-3 sm:p-4 bg-[var(--surface)]">
         <div className="relative w-full aspect-square">
           <Image
             src={product.image}
@@ -64,13 +64,13 @@ function ProductCardHorizontal({ product }: { product: TopProduct }) {
         </div>
       </div>
 
-      {/* Right: Details */}
-      <div className="flex-1 flex flex-col justify-center px-3 py-4 gap-2 min-w-0">
+      {/* Details */}
+      <div className="flex-1 flex flex-col justify-center px-3 py-2 sm:py-4 gap-2 min-w-0">
 
         {/* Title */}
         <Link
           href={`/product/${product.slug}`}
-          className="text-sm font-semibold text-[var(--text)] hover:text-[var(--accent)] line-clamp-2 leading-snug transition-colors"
+          className="text-xs sm:text-sm font-semibold text-[var(--text)] hover:text-[var(--accent)] line-clamp-2 leading-snug transition-colors"
         >
           {product.title}
         </Link>
@@ -126,7 +126,7 @@ export default function TopSellingProducts({ products }: { products: TopProduct[
       <div className="flex items-center justify-center mb-6">
         <h2 className="text-xl font-black text-[var(--text)]">Top Selling Products</h2>
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
         {products.map((p) => (
           <ProductCardHorizontal key={p.id} product={p} />
         ))}
