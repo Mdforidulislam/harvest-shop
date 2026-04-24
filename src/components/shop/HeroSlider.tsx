@@ -58,10 +58,9 @@ export default function HeroSlider() {
         {/* ── Left: Slider ── */}
         <div className="lg:w-[72%]">
           <div
-            className="relative rounded-2xl overflow-hidden h-full"
+            className="relative rounded-2xl overflow-hidden h-full min-h-[320px] sm:min-h-[380px] md:min-h-[420px]"
             style={{
               background: "linear-gradient(135deg, #042b50 0%, #0a3d70 60%, #0d4d8a 100%)",
-              minHeight: 420,
             }}
           >
             {/* Floating background blocks (static decoration) */}
@@ -83,10 +82,10 @@ export default function HeroSlider() {
             ))}
 
             {/* Grid: text left | product right */}
-            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 items-center h-full min-h-[420px] md:min-h-[460px]">
+            <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 items-center h-full min-h-[320px] sm:min-h-[380px] md:min-h-[460px]">
 
               {/* ── LEFT: Text content ── */}
-              <div className="px-8 md:px-12 py-10 md:py-14 flex flex-col gap-5">
+              <div className="px-5 md:px-12 py-7 md:py-14 flex flex-col gap-5">
                 <AnimatePresence mode="wait" custom={direction}>
                   <motion.div
                     key={`text-${current}`}
@@ -143,7 +142,7 @@ export default function HeroSlider() {
                 <div className="flex items-center gap-4 pt-4">
                   <button
                     onClick={prev}
-                    className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+                    className="hidden sm:flex w-8 h-8 rounded-lg bg-white/10 border border-white/20 items-center justify-center text-white hover:bg-white/20 transition-all"
                   >
                     <ChevronLeft size={16} />
                   </button>
@@ -152,7 +151,7 @@ export default function HeroSlider() {
                       <button
                         key={i}
                         onClick={() => setCurrent(i)}
-                        className="transition-all duration-400 rounded-full h-2"
+                        className="transition-all duration-400 rounded-full h-2 min-w-[32px] sm:min-w-0"
                         style={{
                           width: i === current ? 28 : 8,
                           background: i === current ? "#f48721" : "rgba(255,255,255,0.3)",
@@ -162,7 +161,7 @@ export default function HeroSlider() {
                   </div>
                   <button
                     onClick={next}
-                    className="w-8 h-8 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all"
+                    className="hidden sm:flex w-8 h-8 rounded-lg bg-white/10 border border-white/20 items-center justify-center text-white hover:bg-white/20 transition-all"
                   >
                     <ChevronRight size={16} />
                   </button>
@@ -247,12 +246,12 @@ export default function HeroSlider() {
         </div>
 
         {/* ── Right: Two stacked promo cards ── */}
-        <div className="flex flex-row sm:flex-row lg:flex-col gap-4 lg:w-[28%]">
+        <div className="flex flex-col sm:flex-row lg:flex-col gap-4 lg:w-[28%]">
 
           {/* Card 1 — Mustard Oil */}
           <Link
             href="/category/oils"
-            className="relative flex-1 h-36 lg:h-auto rounded-xl overflow-hidden group"
+            className="relative flex-1 h-40 sm:h-36 lg:h-auto rounded-xl overflow-hidden group"
           >
             <Image
               src="https://images.unsplash.com/photo-1589927986089-35812388d1f4?w=600&h=240&fit=crop"
@@ -275,7 +274,7 @@ export default function HeroSlider() {
           {/* Card 2 — Honey */}
           <Link
             href="/category/honey"
-            className="relative flex-1 h-36 lg:h-auto rounded-xl overflow-hidden group"
+            className="relative flex-1 h-40 sm:h-36 lg:h-auto rounded-xl overflow-hidden group"
           >
             <Image
               src="https://images.unsplash.com/photo-1558642891-54be180ea339?w=600&h=240&fit=crop"
