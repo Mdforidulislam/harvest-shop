@@ -14,8 +14,8 @@ export default function Footer() {
       <div className="page-container py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-8">
 
-          {/* Column 1: Brand */}
-          <div>
+          {/* Column 1: Brand — full-width on tablet, normal on desktop */}
+          <div className="md:col-span-2 lg:col-span-1">
             {/* Logo */}
             <Link href="/" className="inline-flex items-center gap-2 mb-5">
               <div
