@@ -177,7 +177,6 @@ export default function HomePage() {
         subtitle="100% raw & unfiltered"
         products={honeyProducts}
         viewAllLink="/category/honey"
-        carousel
       />
 
       {/* Spices */}

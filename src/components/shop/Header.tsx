@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { Search, Heart, ShoppingCart, User, Menu, X, Phone, MapPin, Truck } from "lucide-react";
+import { Search, Heart, ShoppingCart, User, Menu, X, Phone, MapPin, Truck, Package } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppDispatch";
 import { selectCartCount, setDrawerOpen } from "@/features/cart/cartSlice";
@@ -13,6 +13,7 @@ import ThemeToggle from "@/components/shared/ThemeToggle";
 const navLinks = [
   { label: "Home", href: "/" },
   { label: "Shop", href: "/category/all" },
+  { label: "Track Order", href: "/account/orders" },
   { label: "Blog", href: "/blog" },
   { label: "About", href: "/about" },
   { label: "Contact", href: "/contact" },
@@ -130,6 +131,15 @@ export default function Header() {
             >
               <User size={22} className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
               <span className="hidden lg:block text-[10px] font-medium leading-none text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">My Account</span>
+            </Link>
+
+            {/* Track Order */}
+            <Link
+              href="/account/orders"
+              className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)]"
+            >
+              <Package size={22} className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
+              <span className="hidden lg:block text-[10px] font-medium leading-none text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">Track Order</span>
             </Link>
 
             {/* Cart */}
