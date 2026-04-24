@@ -30,7 +30,7 @@ export default function ProductShelf({ title, subtitle, products, viewAllLink, c
         {viewAllLink && (
           <Link
             href={viewAllLink}
-            className="flex items-center gap-1.5 text-xs font-bold py-2 rounded border transition-all hover:text-white"
+            className="flex items-center gap-1.5 text-xs font-bold min-h-[44px] px-3 rounded border transition-all hover:text-white"
             style={{ borderColor: "var(--primary)", color: "var(--primary)" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "var(--primary)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.color = "var(--primary)"; }}
@@ -42,7 +42,7 @@ export default function ProductShelf({ title, subtitle, products, viewAllLink, c
 
       {carousel ? (
         <Carousel
-          slidesPerView={{ base: 1, sm: 2, md: 3, lg: 4, xl: 5 }}
+          slidesPerView={{ base: 2, sm: 2, md: 3, lg: 4, xl: 5 }}
           gap={12}
           autoplay
           autoplayDelay={4000}
