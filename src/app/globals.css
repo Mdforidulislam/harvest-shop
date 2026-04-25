@@ -23,6 +23,11 @@
   --cta-green: #2F6B3A;
   --cta-green-hover: #255930;
   --star: #FFB400;
+  --account-banner-end: #6d28d9;
+  --warning-soft: #fef3c7;
+  --danger-soft: #fee2e2;
+  --success-soft: #d1fae5;
+  --info-soft: #dbeafe;
 }
 
 /* ─── Drovo.bd — Dark Mode ────────────── */
@@ -46,6 +51,11 @@
   --cta-green: #3a9e52;
   --cta-green-hover: #4ab562;
   --star: #FFB400;
+  --account-banner-end: #7c3aed;
+  --warning-soft: #3b2800;
+  --danger-soft: #3b0a0a;
+  --success-soft: #14532d;
+  --info-soft: #1e3a5f;
 }
 
 /* ─── Layout Containers ─── */

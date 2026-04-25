@@ -83,10 +83,6 @@ export const categories: Category[] = [
   { id: "6", name: "Herbal Tea", nameBn: "চা", slug: "tea", icon: "🍵", image: "https://images.unsplash.com/photo-1544787219-7f47ccb76574?w=300&h=300&fit=crop", count: 9 },
   { id: "7", name: "Spices", nameBn: "মশলা", slug: "spices", icon: "🌶️", image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&h=300&fit=crop", count: 30 },
   { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
-  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
-  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
-  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
-  { id: "8", name: "Seeds", nameBn: "বীজ", slug: "seeds", icon: "🌱", image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=300&h=300&fit=crop", count: 14 },
 ];
 
 /* ─── Products ─────────────────────────────────────────── */
@@ -286,7 +282,57 @@ export const reviews: Review[] = [
 ];
 
 /* ─── Orders ────────────────────────── */
-export const fakeOrders: Order[] = [];
+export const fakeOrders: Order[] = [
+  {
+    id: "ORD-10031", date: "2026-04-22", status: "processing", payment: "bKash",
+    total: 1570,
+    items: [
+      { name: "Sundarban Pure Honey 500g", qty: 1, price: 720, image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=120&h=120&fit=crop" },
+      { name: "Pure Deshi Ghee 500g",      qty: 1, price: 850, image: "https://images.unsplash.com/photo-1631206753348-db44968fd440?w=120&h=120&fit=crop" },
+    ],
+  },
+  {
+    id: "ORD-10029", date: "2026-04-18", status: "shipped", payment: "SSLCommerz",
+    total: 2150,
+    items: [
+      { name: "Black Seed (Kalonji) 200g", qty: 2, price: 480, image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=120&h=120&fit=crop" },
+      { name: "Premium Kashmiri Saffron",  qty: 1, price: 1190, image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=120&h=120&fit=crop" },
+    ],
+  },
+  {
+    id: "ORD-10025", date: "2026-04-10", status: "delivered", payment: "COD",
+    total: 940,
+    items: [
+      { name: "Organic Sundarban Honey 250g", qty: 1, price: 420, image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=120&h=120&fit=crop" },
+      { name: "Wild Forest Honey 250g",       qty: 1, price: 520, image: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=120&h=120&fit=crop" },
+    ],
+  },
+  {
+    id: "ORD-10022", date: "2026-04-03", status: "pending", payment: "bKash",
+    total: 3400,
+    items: [
+      { name: "A2 Cow Ghee 1kg",            qty: 2, price: 1200, image: "https://images.unsplash.com/photo-1631206753348-db44968fd440?w=120&h=120&fit=crop" },
+      { name: "Sundarban Pure Honey 500g",   qty: 1, price: 720,  image: "https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=120&h=120&fit=crop" },
+      { name: "Mixed Dried Fruits 400g",     qty: 1, price: 280,  image: "https://images.unsplash.com/photo-1606914501449-5a96b6ce24ca?w=120&h=120&fit=crop" },
+    ],
+  },
+  {
+    id: "ORD-10018", date: "2026-03-28", status: "cancelled", payment: "COD",
+    total: 850,
+    items: [
+      { name: "Pure Deshi Ghee 500g", qty: 1, price: 850, image: "https://images.unsplash.com/photo-1631206753348-db44968fd440?w=120&h=120&fit=crop" },
+    ],
+  },
+  {
+    id: "ORD-10014", date: "2026-03-20", status: "delivered", payment: "SSLCommerz",
+    total: 1680,
+    items: [
+      { name: "Organic Moringa Powder 100g", qty: 3, price: 360, image: "https://images.unsplash.com/photo-1515942400420-2b98fed1f515?w=120&h=120&fit=crop" },
+      { name: "Black Seed Oil 200ml",        qty: 1, price: 620, image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=120&h=120&fit=crop" },
+      { name: "Wild Forest Honey 250g",      qty: 1, price: 520, image: "https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=120&h=120&fit=crop" },
+    ],
+  },
+];
 
 /* ─── Computed ───────────────────────────────────────── */
 export const flashDeals = products.filter(p => p.salePrice).slice(0, 6);

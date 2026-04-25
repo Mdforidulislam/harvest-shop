@@ -1,200 +1,194 @@
-import Link from "next/link";
-import Image from "next/image";
-import {
-  TrendingUp, TrendingDown, ShoppingBag, Users, Package,
-  DollarSign, ArrowRight, Eye, CheckCircle, Clock, Truck,
-} from "lucide-react";
-import { fakeOrders, products } from "@/lib/fake-data";
-import { formatDate, formatPrice } from "@/lib/utils";
 import type { Metadata } from "next";
+import DonutKpiCard, { type DonutSegment } from "@/components/admin/DonutKpiCard";
+import BarKpiCard, { type BarDataPoint } from "@/components/admin/BarKpiCard";
+import ProgressKpiCard from "@/components/admin/ProgressKpiCard";
+import HeroesKpiCard from "@/components/admin/HeroesKpiCard";
+import RecentOrdersCard, { type OrderCategory } from "@/components/admin/RecentOrdersCard";
+import SalesChartCard, { type ChartPoint } from "@/components/admin/SalesChartCard";
 
 export const metadata: Metadata = { title: "Admin Dashboard — Harvest" };
 
-const stats = [
+/* ── KPI data ───────────────────────────────────────── */
+
+const earningsSegments: DonutSegment[] = [
+  { label: "Shoes",  value: 12500, color: "primary" },
+  { label: "Gaming", value: 8200,  color: "accent"  },
+  { label: "Others", value: 4200,  color: "info"    },
+];
+
+const dailySalesData: BarDataPoint[] = [
+  { day: "Mon", value: 980  },
+  { day: "Tue", value: 1350 },
+  { day: "Wed", value: 1120 },
+  { day: "Thu", value: 1580 },
+  { day: "Fri", value: 1245 },
+  { day: "Sat", value: 1890 },
+  { day: "Sun", value: 720  },
+];
+
+/* ── Recent orders sample data ──────────────────────── */
+
+const HEADPHONE_IMG = "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=80&h=80&fit=crop";
+const SHOE_IMG      = "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=80&h=80&fit=crop";
+const TSHIRT_IMG    = "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=80&h=80&fit=crop";
+const WATCH_IMG     = "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=80&h=80&fit=crop";
+
+const recentOrderCategories: OrderCategory[] = [
   {
-    label: "Total Revenue",
-    value: "৳1,84,250",
-    change: "+18.2%",
-    up: true,
-    icon: DollarSign,
-    color: "var(--primary)",
-    bg: "var(--primary-soft)",
-    sub: "vs last month",
+    key: "headphones",
+    label: "Headphones",
+    emoji: "🎧",
+    rows: [
+      { id: "h1", name: "Sony WH-1000XM5",     sku: "SNY-001", image: HEADPHONE_IMG, quantity: 2, price: 12500, total: 25000 },
+      { id: "h2", name: "JBL Tune 520BT",        sku: "JBL-002", image: HEADPHONE_IMG, quantity: 1, price:  4800, total:  4800 },
+      { id: "h3", name: "Apple AirPods Pro",     sku: "APL-003", image: HEADPHONE_IMG, quantity: 3, price: 28000, total: 84000 },
+      { id: "h4", name: "Samsung Galaxy Buds+",  sku: "SMG-004", image: HEADPHONE_IMG, quantity: 2, price:  8500, total: 17000 },
+    ],
   },
   {
-    label: "Total Orders",
-    value: "342",
-    change: "+12.5%",
-    up: true,
-    icon: ShoppingBag,
-    color: "var(--accent)",
-    bg: "var(--accent-soft)",
-    sub: "vs last month",
+    key: "shoes",
+    label: "Shoes",
+    emoji: "👟",
+    rows: [
+      { id: "s1", name: "Nike Air Max 270",   sku: "NK-001", image: SHOE_IMG, quantity: 1, price:  9500, total:  9500 },
+      { id: "s2", name: "Adidas Ultraboost",  sku: "AD-002", image: SHOE_IMG, quantity: 2, price: 14000, total: 28000 },
+      { id: "s3", name: "Puma RS-X",          sku: "PM-003", image: SHOE_IMG, quantity: 1, price:  6500, total:  6500 },
+      { id: "s4", name: "New Balance 574",    sku: "NB-004", image: SHOE_IMG, quantity: 3, price:  8000, total: 24000 },
+    ],
   },
   {
-    label: "Total Customers",
-    value: "1,284",
-    change: "+8.1%",
-    up: true,
-    icon: Users,
-    color: "var(--info)",
-    bg: "#dbeafe",
-    sub: "vs last month",
+    key: "tshirt",
+    label: "T-shirt",
+    emoji: "👕",
+    rows: [
+      { id: "t1", name: "Harvest Premium Tee",     sku: "HP-001", image: TSHIRT_IMG, quantity: 5, price: 1200, total: 6000 },
+      { id: "t2", name: "Organic Cotton Shirt",    sku: "OC-002", image: TSHIRT_IMG, quantity: 3, price: 1800, total: 5400 },
+      { id: "t3", name: "Sports Performance Tee",  sku: "SP-003", image: TSHIRT_IMG, quantity: 4, price: 1500, total: 6000 },
+      { id: "t4", name: "Casual Linen Shirt",      sku: "CL-004", image: TSHIRT_IMG, quantity: 2, price: 2200, total: 4400 },
+    ],
   },
   {
-    label: "Active Products",
-    value: "87",
-    change: "-2",
-    up: false,
-    icon: Package,
-    color: "var(--warning)",
-    bg: "#fef3c7",
-    sub: "2 out of stock",
+    key: "watch",
+    label: "Watch",
+    emoji: "⌚",
+    rows: [
+      { id: "w1", name: "Casio G-Shock",         sku: "CSO-001", image: WATCH_IMG, quantity: 1, price:  8500, total:  8500 },
+      { id: "w2", name: "Fossil Gen 6",           sku: "FSL-002", image: WATCH_IMG, quantity: 2, price: 15000, total: 30000 },
+      { id: "w3", name: "Samsung Galaxy Watch",   sku: "SMG-003", image: WATCH_IMG, quantity: 1, price: 28000, total: 28000 },
+      { id: "w4", name: "Amazfit GTR 4",          sku: "AMZ-004", image: WATCH_IMG, quantity: 3, price: 12000, total: 36000 },
+    ],
   },
 ];
 
-const statusConfig: Record<string, { label: string; cls: string; icon: typeof Clock }> = {
-  pending:    { label: "Pending",    cls: "badge-warning",  icon: Clock },
-  processing: { label: "Processing", cls: "badge-primary",  icon: Package },
-  shipped:    { label: "Shipped",    cls: "badge-info",     icon: Truck },
-  delivered:  { label: "Delivered",  cls: "badge-success",  icon: CheckCircle },
-  cancelled:  { label: "Cancelled",  cls: "badge-danger",   icon: Clock },
-};
+/* ── Chart data ─────────────────────────────────────── */
 
-const topProducts = products.slice(0, 5).map((p, i) => ({
-  ...p,
-  sold: [142, 117, 98, 84, 73][i],
-  revenue: formatPrice(p.price * [142, 117, 98, 84, 73][i]),
-}));
+const salesData: ChartPoint[] = [
+  { date: "Jun 04", value: 8200  },
+  { date: "Jun 07", value: 12400 },
+  { date: "Jun 10", value: 9800  },
+  { date: "Jun 13", value: 15600 },
+  { date: "Jun 16", value: 18350 },
+];
+
+const discountedData: ChartPoint[] = [
+  { date: "Jun 04", value: 3200 },
+  { date: "Jun 07", value: 5800 },
+  { date: "Jun 10", value: 4200 },
+  { date: "Jun 13", value: 7100 },
+  { date: "Jun 16", value: 8750 },
+];
+
+const heroAvatars = [
+  "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=64&h=64&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=64&h=64&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=64&h=64&fit=crop&crop=face",
+  "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=64&h=64&fit=crop&crop=face",
+];
+
+/* ── Page ───────────────────────────────────────────── */
 
 export default function AdminDashboardPage() {
-  const recentOrders = fakeOrders.slice(0, 6);
-
   return (
     <div className="space-y-6">
-      {/* Welcome */}
+
+      {/* Page title + breadcrumb */}
       <div>
-        <h2 className="text-xl font-bold" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>
-          Good morning, Admin 👋
-        </h2>
-        <p className="text-sm mt-0.5" style={{ color: "var(--text-muted)" }}>
-          Here&apos;s what&apos;s happening with your store today.
+        <h1
+          className="text-2xl font-bold"
+          style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}
+        >
+          eCommerce Dashboard
+        </h1>
+        <p className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>
+          Home &rsaquo; Dashboard
         </p>
       </div>
 
-      {/* Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-        {stats.map(({ label, value, change, up, icon: Icon, color, bg, sub }) => (
-          <div key={label} className="card p-5">
-            <div className="flex items-start justify-between mb-4">
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: bg }}>
-                <Icon size={18} style={{ color }} />
-              </div>
-              <span className={`flex items-center gap-0.5 text-xs font-semibold px-2 py-1 rounded-full`}
-                style={{ background: up ? "#dcfce7" : "#fee2e2", color: up ? "var(--success)" : "var(--danger)" }}>
-                {up ? <TrendingUp size={11} /> : <TrendingDown size={11} />}
-                {change}
-              </span>
-            </div>
-            <p className="text-2xl font-bold price-num mb-0.5" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>
-              {value}
-            </p>
-            <p className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>{label}</p>
-            <p className="text-[10px] mt-0.5" style={{ color: "var(--text-muted)" }}>{sub}</p>
-          </div>
-        ))}
-      </div>
+      {/* ── Two-column grid ─────────────────────────── */}
+      {/* Right column (charts) stacks below on laptop; sits beside on xl */}
+      <div className="grid grid-cols-1 xl:grid-cols-[1fr_360px] gap-6">
 
-      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        {/* Recent Orders */}
-        <div className="xl:col-span-2 card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-base" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>Recent Orders</h3>
-            <Link href="/admin/orders" className="flex items-center gap-1 text-xs font-medium" style={{ color: "var(--primary)" }}>
-              View all <ArrowRight size={12} />
-            </Link>
+        {/* ── Left column ──────────────────────────── */}
+        <div className="space-y-4 min-w-0">
+
+          {/* KPI row 1 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <DonutKpiCard
+              title="Expected Earnings"
+              value={24900}
+              delta={2.2}
+              segments={earningsSegments}
+            />
+            <BarKpiCard
+              title="Average Daily Sales"
+              value={1245}
+              delta={1.8}
+              data={dailySalesData}
+            />
           </div>
-          <div className="space-y-3">
-            {recentOrders.map((order) => {
-              const cfg = statusConfig[order.status];
-              const StatusIcon = cfg.icon;
-              return (
-                <div key={order.id} className="flex items-center gap-3 p-3 rounded-xl transition-colors" style={{ background: "var(--surface-2)" }}>
-                  <div className="flex -space-x-2 flex-shrink-0">
-                    {order.items.slice(0, 2).map((item, i) => (
-                      <div key={i} className="relative w-9 h-9 rounded-lg overflow-hidden border-2" style={{ borderColor: "var(--surface)" }}>
-                        <Image src={item.image} alt={item.name} fill className="object-cover" sizes="36px" />
-                      </div>
-                    ))}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold" style={{ color: "var(--text)" }}>{order.id}</p>
-                    <p className="text-xs truncate" style={{ color: "var(--text-muted)" }}>
-                      {order.items.length} item{order.items.length > 1 ? "s" : ""} · {formatDate(order.date)}
-                    </p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-sm font-bold price-num" style={{ color: "var(--text)" }}>{formatPrice(order.total)}</p>
-                    <span className={`badge ${cfg.cls} text-[10px] gap-0.5`}>
-                      <StatusIcon size={9} /> {cfg.label}
-                    </span>
-                  </div>
-                  <button className="flex-shrink-0 w-7 h-7 rounded-lg flex items-center justify-center hover:bg-[var(--border)] transition-colors" style={{ color: "var(--text-muted)" }}>
-                    <Eye size={13} />
-                  </button>
-                </div>
-              );
-            })}
+
+          {/* KPI row 2 */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <ProgressKpiCard
+              title="Orders this Month"
+              value={1220}
+              delta={-3.5}
+              current={1220}
+              goal={1500}
+            />
+            <HeroesKpiCard
+              title="New Customers this Month"
+              value={452}
+              delta={5.2}
+              heroCount={38}
+              avatarUrls={heroAvatars}
+            />
           </div>
+
+          {/* Recent orders */}
+          <RecentOrdersCard categories={recentOrderCategories} />
         </div>
 
-        {/* Top Products */}
-        <div className="card p-5">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="font-bold text-base" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>Top Products</h3>
-            <Link href="/admin/products" className="flex items-center gap-1 text-xs font-medium" style={{ color: "var(--primary)" }}>
-              All <ArrowRight size={12} />
-            </Link>
-          </div>
-          <div className="space-y-3">
-            {topProducts.map((p, idx) => (
-              <div key={p.id} className="flex items-center gap-3">
-                <span className="text-xs font-bold w-4 text-center flex-shrink-0" style={{ color: "var(--text-muted)" }}>
-                  {idx + 1}
-                </span>
-                <div className="relative w-10 h-10 rounded-lg overflow-hidden flex-shrink-0" style={{ background: "var(--surface-2)" }}>
-                  <Image src={p.images[0]} alt={p.name} fill className="object-cover" sizes="40px" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-xs font-semibold truncate" style={{ color: "var(--text)" }}>{p.name}</p>
-                  <p className="text-[10px]" style={{ color: "var(--text-muted)" }}>{p.sold} sold</p>
-                </div>
-                <p className="text-xs font-bold price-num flex-shrink-0" style={{ color: "var(--primary)" }}>{p.revenue}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="card p-5">
-        <h3 className="font-bold text-base mb-4" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>Quick Actions</h3>
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          {[
-            { label: "Add Product", href: "/admin/products/new", color: "var(--primary)", bg: "var(--primary-soft)" },
-            { label: "View Orders", href: "/admin/orders", color: "var(--accent)", bg: "var(--accent-soft)" },
-            { label: "Manage Users", href: "/admin/customers", color: "var(--info)", bg: "#dbeafe" },
-            { label: "Site Settings", href: "/admin/settings", color: "var(--text-muted)", bg: "var(--surface-2)" },
-          ].map(({ label, href, color, bg }) => (
-            <Link
-              key={label}
-              href={href}
-              className="flex flex-col items-center justify-center gap-2 p-4 rounded-xl text-center text-sm font-semibold transition-opacity hover:opacity-80"
-              style={{ background: bg, color }}
-            >
-              {label}
-            </Link>
-          ))}
+        {/* ── Right column (charts) ─────────────────── */}
+        <div className="space-y-4 min-w-0">
+          <SalesChartCard
+            title="Sales this months"
+            subtitle="Users from all channels"
+            value={18350}
+            delta={4.2}
+            goalGap={1650}
+            data={salesData}
+            color="success"
+          />
+          <SalesChartCard
+            title="Discounted Product Sales"
+            subtitle="Promo & coupon channel"
+            value={8750}
+            delta={2.1}
+            goalGap={1250}
+            data={discountedData}
+            color="info"
+          />
         </div>
       </div>
     </div>

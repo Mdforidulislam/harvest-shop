@@ -1,221 +1,508 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import {
-  LayoutDashboard, ShoppingBag, Package, Users, Tag,
-  BarChart2, Settings, LogOut, Leaf, Bell, ChevronRight,
-  CreditCard, Ticket, ChevronDown, Menu, X, ArrowUpRight,
-  Search, Sparkles
-} from "lucide-react";
-import ThemeToggle from "@/components/shared/ThemeToggle";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import {
+  LayoutDashboard, Package, ShoppingCart, Users, BarChart2,
+  Star, CreditCard, Store, Zap, Paintbrush, Settings,
+  ChevronDown, ChevronRight, Menu, X, Bell, LogOut,
+  Leaf, Search, UserCircle,
+} from "lucide-react";
+import ThemeToggle from "@/components/shared/ThemeToggle";
 import { cn } from "@/lib/utils";
 
-const navGroups = [
+/* ── Navigation definition ──────────────────────────── */
+
+type NavChild = { href: string; label: string };
+type NavItem = {
+  href: string;
+  label: string;
+  icon: React.ElementType;
+  expandable?: boolean;
+  children?: NavChild[];
+};
+
+const NAV_ITEMS: NavItem[] = [
+  { href: "/admin",              label: "Dashboard",   icon: LayoutDashboard },
   {
-    label: "Intelligence",
-    items: [
-      { href: "/admin", label: "Workbench", icon: LayoutDashboard },
-      { href: "/admin/analytics", label: "Performance", icon: BarChart2 },
+    href: "/admin/products",     label: "Products",    icon: Package, expandable: true,
+    children: [
+      { href: "/admin/products",     label: "All Products" },
+      { href: "/admin/products/new", label: "New Product"  },
     ],
   },
   {
-    label: "The Market",
-    items: [
-      { href: "/admin/orders", label: "Harvest Hub", icon: ShoppingBag, badge: "3" },
-      { href: "/admin/products", label: "Catalogue", icon: Package },
-      { href: "/admin/categories", label: "Sections", icon: Tag },
-      { href: "/admin/customers", label: "Audience", icon: Users },
+    href: "/admin/orders",       label: "Orders",      icon: ShoppingCart, expandable: true,
+    children: [
+      { href: "/admin/orders",     label: "All Orders" },
+      { href: "/admin/orders/new", label: "New Order"  },
     ],
   },
+  { href: "/admin/customers",    label: "Customers",    icon: Users       },
+  { href: "/admin/analytics",    label: "Statistics",   icon: BarChart2   },
+  { href: "/admin/reviews",      label: "Reviews",      icon: Star        },
+  { href: "/admin/payments",     label: "Transactions", icon: CreditCard  },
+  { href: "/admin/sellers",      label: "Sellers",      icon: Store       },
+  { href: "/admin/coupons",      label: "Hot offers",   icon: Zap         },
   {
-    label: "Treasury",
-    items: [
-      { href: "/admin/payments", label: "Ledgers", icon: CreditCard },
-      { href: "/admin/coupons", label: "Incentives", icon: Ticket },
+    href: "/admin/appearance",   label: "Appearance",  icon: Paintbrush, expandable: true,
+    children: [
+      { href: "/admin/appearance",  label: "Theme"  },
+      { href: "/admin/settings",    label: "Layout" },
     ],
   },
-  {
-    label: "Configuration",
-    items: [
-      { href: "/admin/settings", label: "Preferences", icon: Settings },
-    ],
-  },
+  { href: "/admin/settings",     label: "Settings",    icon: Settings    },
 ];
 
-const allItems = navGroups.flatMap((g) => g.items);
+function isItemActive(item: NavItem, pathname: string): boolean {
+  if (item.href === "/admin") return pathname === "/admin";
+  return pathname.startsWith(item.href);
+}
+
+/* ── Layout ─────────────────────────────────────────── */
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [expanded, setExpanded] = useState<string[]>([]);
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const currentItem = allItems.find((i) => pathname === i.href || (i.href !== "/admin" && pathname.startsWith(i.href)));
+  // Auto-expand the parent of the active route on mount / navigation
+  useEffect(() => {
+    NAV_ITEMS.forEach((item) => {
+      if (item.expandable && isItemActive(item, pathname)) {
+        setExpanded((prev) => (prev.includes(item.href) ? prev : [...prev, item.href]));
+      }
+    });
+  }, [pathname]);
 
-  return (
-    <div className="min-h-screen flex bg-[var(--bg)] selection:bg-[var(--primary-soft)] selection:text-[var(--primary)]">
+  const toggleExpand = (href: string) =>
+    setExpanded((prev) =>
+      prev.includes(href) ? prev.filter((h) => h !== href) : [...prev, href]
+    );
 
-      {/* ── Sidebar ─────────────────────────────── */}
-      <motion.aside
-        initial={false}
-        animate={{ width: sidebarOpen ? 280 : 80 }}
-        className="flex-shrink-0 flex flex-col transition-all duration-300 z-[100] h-screen sticky top-0 bg-[var(--surface)] border-r border-[var(--border)] group/sidebar"
+  /* ── Sidebar contents (shared desktop + mobile drawer) ── */
+  const SidebarContents = () => (
+    <div className="flex flex-col h-full">
+      {/* Logo */}
+      <div
+        className="h-16 flex items-center px-5 gap-3 flex-shrink-0"
+        style={{ borderBottom: "1px solid var(--border)" }}
       >
-        {/* Logo Section */}
-        <div className="h-24 flex items-center px-6 gap-4 border-b border-[var(--border)] bg-[var(--surface)]">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-white bg-[var(--primary)] shadow-xl shadow-[var(--primary)]/20 flex-shrink-0 group-hover/sidebar:rotate-6 transition-transform">
-            <Leaf size={24} strokeWidth={2.5} />
+        <div
+          className="w-9 h-9 rounded-xl flex items-center justify-center text-white flex-shrink-0 shadow-lg"
+          style={{ background: "var(--primary)" }}
+        >
+          <Leaf size={18} strokeWidth={2.5} />
+        </div>
+        <AnimatePresence>
+          {(sidebarOpen || mobileOpen) && (
+            <motion.div
+              initial={{ opacity: 0, x: -8 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -8 }}
+              transition={{ duration: 0.15 }}
+              className="leading-none overflow-hidden"
+            >
+              <span
+                className="font-black text-base tracking-tight block"
+                style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}
+              >
+                Harvest
+              </span>
+              <span
+                className="text-[9px] font-black uppercase tracking-[0.25em] block"
+                style={{ color: "var(--primary)" }}
+              >
+                Console
+              </span>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Section label */}
+      <div className="px-4 pt-5 pb-2 flex-shrink-0">
+        <AnimatePresence>
+          {(sidebarOpen || mobileOpen) && (
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="text-[10px] font-black uppercase tracking-[0.3em]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              Manage listings
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </div>
+
+      {/* Nav items */}
+      <nav className="flex-1 overflow-y-auto scrollbar-none px-3 pb-4 space-y-0.5">
+        {NAV_ITEMS.map((item) => {
+          const active = isItemActive(item, pathname);
+          const isExpanded = expanded.includes(item.href);
+          const Icon = item.icon;
+
+          return (
+            <div key={item.href}>
+              {/* Parent item */}
+              <button
+                onClick={() => {
+                  if (item.expandable) toggleExpand(item.href);
+                  else {
+                    setMobileOpen(false);
+                  }
+                }}
+                className={cn(
+                  "w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all",
+                  active && !item.expandable
+                    ? "text-white shadow-lg"
+                    : "hover:bg-[var(--surface-2)]"
+                )}
+                style={{
+                  background:
+                    active && !item.expandable ? "var(--primary)" : "transparent",
+                  color:
+                    active && !item.expandable ? "white" : "var(--text-muted)",
+                }}
+                aria-current={active && !item.expandable ? "page" : undefined}
+                aria-expanded={item.expandable ? isExpanded : undefined}
+              >
+                {/* If not expandable, wrap with Link */}
+                {!item.expandable ? (
+                  <Link
+                    href={item.href}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-3 w-full"
+                    tabIndex={-1}
+                  >
+                    <Icon
+                      size={17}
+                      className="flex-shrink-0"
+                      style={{ color: active ? "white" : "var(--text-muted)" }}
+                      aria-hidden="true"
+                    />
+                    <AnimatePresence>
+                      {(sidebarOpen || mobileOpen) && (
+                        <motion.span
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -6 }}
+                          transition={{ duration: 0.12 }}
+                          className="flex-1 text-left whitespace-nowrap overflow-hidden"
+                        >
+                          {item.label}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </Link>
+                ) : (
+                  <>
+                    <Icon
+                      size={17}
+                      className="flex-shrink-0"
+                      style={{ color: active ? "var(--primary)" : "var(--text-muted)" }}
+                      aria-hidden="true"
+                    />
+                    <AnimatePresence>
+                      {(sidebarOpen || mobileOpen) && (
+                        <motion.span
+                          initial={{ opacity: 0, x: -6 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -6 }}
+                          transition={{ duration: 0.12 }}
+                          className="flex-1 text-left whitespace-nowrap overflow-hidden"
+                          style={{ color: active ? "var(--primary)" : "var(--text-muted)" }}
+                        >
+                          {item.label}
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                    {(sidebarOpen || mobileOpen) && (
+                      <motion.div
+                        animate={{ rotate: isExpanded ? 90 : 0 }}
+                        transition={{ duration: 0.2 }}
+                        className="flex-shrink-0"
+                        aria-hidden="true"
+                      >
+                        <ChevronRight
+                          size={14}
+                          style={{ color: "var(--text-muted)" }}
+                        />
+                      </motion.div>
+                    )}
+                  </>
+                )}
+              </button>
+
+              {/* Sub-items */}
+              <AnimatePresence>
+                {item.expandable && isExpanded && (sidebarOpen || mobileOpen) && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                    className="overflow-hidden ml-5 mt-0.5 space-y-0.5"
+                    style={{ paddingLeft: "0.5rem", borderLeft: "2px solid var(--border)" }}
+                  >
+                    {item.children?.map((child) => {
+                      const childActive = pathname === child.href;
+                      return (
+                        <Link
+                          key={child.href}
+                          href={child.href}
+                          onClick={() => setMobileOpen(false)}
+                          className="flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all"
+                          style={{
+                            background: childActive ? "var(--primary-soft)" : "transparent",
+                            color: childActive ? "var(--primary)" : "var(--text-muted)",
+                          }}
+                          aria-current={childActive ? "page" : undefined}
+                        >
+                          <ChevronRight
+                            size={11}
+                            style={{ color: childActive ? "var(--primary)" : "var(--border)" }}
+                            aria-hidden="true"
+                          />
+                          {child.label}
+                        </Link>
+                      );
+                    })}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          );
+        })}
+      </nav>
+
+      {/* Footer: user + collapse */}
+      <div
+        className="p-3 flex-shrink-0"
+        style={{ borderTop: "1px solid var(--border)" }}
+      >
+        <div
+          className={cn(
+            "flex items-center gap-3 p-3 rounded-xl transition-all overflow-hidden",
+            sidebarOpen || mobileOpen ? "bg-[var(--surface-2)]" : "bg-transparent"
+          )}
+        >
+          <div
+            className="w-8 h-8 rounded-full flex items-center justify-center text-white font-black text-sm flex-shrink-0"
+            style={{ background: "var(--primary)" }}
+          >
+            A
           </div>
           <AnimatePresence>
-            {sidebarOpen && (
+            {(sidebarOpen || mobileOpen) && (
               <motion.div
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="flex flex-col leading-none"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="flex-1 min-w-0"
               >
-                <span className="font-black text-xl tracking-tighter text-[var(--text)] uppercase" style={{ fontFamily: "Plus Jakarta Sans, sans-serif" }}>Harvest</span>
-                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-[var(--primary)]">Console</span>
+                <p
+                  className="font-bold text-xs truncate"
+                  style={{ color: "var(--text)" }}
+                >
+                  Administrator
+                </p>
+                <p
+                  className="text-[10px] truncate"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  System Root
+                </p>
               </motion.div>
             )}
           </AnimatePresence>
+          {(sidebarOpen || mobileOpen) && (
+            <button
+              className="flex-shrink-0 transition-colors hover:opacity-70"
+              style={{ color: "var(--text-muted)" }}
+              aria-label="Sign out"
+            >
+              <LogOut size={15} />
+            </button>
+          )}
         </div>
 
-        {/* Nav Flow */}
-        <nav className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-10 scrollbar-none">
-          {navGroups.map((group) => (
-            <div key={group.label}>
-              <AnimatePresence>
-                {sidebarOpen && (
-                  <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.4 }}
-                    exit={{ opacity: 0 }}
-                    className="text-[10px] font-black uppercase tracking-[.3em] mb-6 px-4"
-                  >
-                    {group.label}
-                  </motion.p>
-                )}
-              </AnimatePresence>
-              <div className="space-y-2">
-                {group.items.map(({ href, label, icon: Icon, badge }) => {
-                  const active = href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
-                  return (
-                    <Link
-                      key={href}
-                      href={href}
-                      className={cn(
-                        "flex items-center gap-4 px-4 py-3.5 rounded-2xl text-xs font-black uppercase tracking-widest transition-all group/item relative overflow-hidden",
-                        active
-                          ? "bg-[var(--primary)] text-white shadow-2xl shadow-[var(--primary)]/20"
-                          : "text-[var(--text-muted)] hover:bg-[var(--surface-2)] hover:text-[var(--text)]"
-                      )}
-                    >
-                      <Icon size={18} className={cn("flex-shrink-0", active ? "text-white" : "group-hover/item:text-[var(--primary)] transition-colors")} />
-                      <AnimatePresence>
-                        {sidebarOpen && (
-                          <motion.span
-                            initial={{ opacity: 0, x: -10 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -10 }}
-                            className="flex-1 whitespace-nowrap"
-                          >
-                            {label}
-                          </motion.span>
-                        )}
-                      </AnimatePresence>
-                      {badge && sidebarOpen && (
-                        <span className={cn(
-                          "px-2 py-0.5 rounded-lg text-[9px] font-black",
-                          active ? "bg-white/20 text-white" : "bg-[var(--danger)] text-white"
-                        )}>{badge}</span>
-                      )}
-                      {active && sidebarOpen && <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-white rounded-r-full" />}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </nav>
+        {/* Collapse toggle (desktop only) */}
+        <button
+          onClick={() => setSidebarOpen((v) => !v)}
+          className="hidden lg:flex w-full mt-2 h-9 rounded-xl items-center justify-center transition-all border"
+          style={{
+            borderColor: "var(--border)",
+            borderStyle: "dashed",
+            color: "var(--text-muted)",
+          }}
+          aria-label={sidebarOpen ? "Collapse sidebar" : "Expand sidebar"}
+        >
+          {sidebarOpen ? <X size={15} /> : <Menu size={15} />}
+        </button>
+      </div>
+    </div>
+  );
 
-        {/* Console Foot */}
-        <div className="p-4 border-t border-[var(--border)]">
-          <div className={cn(
-            "flex items-center gap-4 p-4 rounded-[2rem] transition-all overflow-hidden",
-            sidebarOpen ? "bg-[var(--surface-2)]" : "bg-transparent"
-          )}>
-            <div className="w-10 h-10 rounded-2xl bg-[var(--primary)] flex items-center justify-center text-white font-black text-sm shadow-lg flex-shrink-0">A</div>
-            <AnimatePresence>
-              {sidebarOpen && (
-                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex-1 min-w-0">
-                  <p className="font-black text-xs text-[var(--text)] truncate">Administrator</p>
-                  <p className="text-[10px] font-bold text-[var(--text-muted)] truncate opacity-60">System Root</p>
-                </motion.div>
-              )}
-            </AnimatePresence>
-            {sidebarOpen && <button className="text-[var(--text-muted)] hover:text-[var(--danger)] transition-colors"><LogOut size={16} /></button>}
-          </div>
-          <button
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="w-full mt-4 h-12 rounded-2xl border-2 border-dashed border-[var(--border)] flex items-center justify-center text-[var(--text-muted)] hover:border-[var(--primary)] hover:text-[var(--primary)] transition-all"
-          >
-            {sidebarOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-        </div>
+  return (
+    <div
+      className="min-h-screen flex"
+      style={{ background: "var(--bg)" }}
+    >
+      {/* ── Desktop sidebar (sticky) ───────────────── */}
+      <motion.aside
+        initial={false}
+        animate={{ width: sidebarOpen ? 240 : 72 }}
+        transition={{ duration: 0.25, ease: "easeInOut" }}
+        className="hidden lg:flex flex-col flex-shrink-0 h-screen sticky top-0 overflow-hidden z-[100]"
+        style={{ background: "var(--surface)", borderRight: "1px solid var(--border)" }}
+        aria-label="Main navigation"
+      >
+        <SidebarContents />
       </motion.aside>
 
-      {/* ── Main Viewport ─────────────────────────────── */}
+      {/* ── Mobile drawer overlay ──────────────────── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[110] lg:hidden"
+            style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
+            onClick={() => setMobileOpen(false)}
+            aria-hidden="true"
+          />
+        )}
+      </AnimatePresence>
+
+      {/* ── Mobile drawer sidebar ──────────────────── */}
+      <AnimatePresence>
+        {mobileOpen && (
+          <motion.aside
+            initial={{ x: -280 }}
+            animate={{ x: 0 }}
+            exit={{ x: -280 }}
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="fixed left-0 top-0 h-screen z-[120] lg:hidden overflow-hidden"
+            style={{
+              width: 240,
+              background: "var(--surface)",
+              borderRight: "1px solid var(--border)",
+              boxShadow: "4px 0 24px rgba(0,0,0,0.15)",
+            }}
+            aria-label="Navigation drawer"
+          >
+            <SidebarContents />
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      {/* ── Main viewport ──────────────────────────── */}
       <div className="flex-1 flex flex-col min-w-0">
 
-        {/* Superior Header */}
+        {/* ── Top header ─────────────────────────────── */}
         <header
           className={cn(
-            "h-24 flex items-center justify-between px-10 flex-shrink-0 sticky top-0 z-[90] transition-all duration-500",
-            scrolled ? "bg-[var(--surface)]/80 backdrop-blur-xl border-b border-[var(--border)] shadow-2xl shadow-black/[0.02]" : "bg-transparent"
+            "h-16 flex items-center justify-between px-5 lg:px-8 flex-shrink-0 sticky top-0 z-[90] transition-all duration-300",
+            scrolled
+              ? "bg-[var(--surface)]/90 backdrop-blur-xl shadow-sm"
+              : "bg-[var(--surface)]"
           )}
+          style={{ borderBottom: "1px solid var(--border)" }}
         >
-          <div className="flex items-center gap-6">
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-[var(--primary)] mb-1">
-                <Sparkles size={10} fill="currentColor" /> System Online
-              </div>
-              <h2 className="text-xl font-black text-[var(--text)] tracking-tight">
-                {currentItem?.label ?? "Control Panel"}
-              </h2>
+          {/* Left: mobile hamburger + logo mark */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => setMobileOpen(true)}
+              className="lg:hidden w-9 h-9 rounded-xl flex items-center justify-center transition-colors hover:bg-[var(--surface-2)]"
+              style={{ color: "var(--text-muted)" }}
+              aria-label="Open navigation"
+            >
+              <Menu size={18} />
+            </button>
+            {/* Circular brand mark */}
+            <div
+              className="w-9 h-9 rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-md"
+              style={{ background: "var(--primary)" }}
+              aria-hidden="true"
+            >
+              <Leaf size={16} strokeWidth={2.5} />
             </div>
           </div>
 
-          <div className="flex items-center gap-6">
-            <div className="relative hidden md:block">
-              <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--text-muted)]" />
-              <input placeholder="Search Console..." className="w-64 h-11 pl-12 pr-4 rounded-xl bg-[var(--surface-2)] border-none text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-[var(--primary)] transition-all" />
+          {/* Center: global search */}
+          <div className="hidden md:flex flex-1 max-w-sm mx-6">
+            <div className="relative w-full">
+              <Search
+                size={15}
+                className="absolute left-3.5 top-1/2 -translate-y-1/2"
+                style={{ color: "var(--text-muted)" }}
+                aria-hidden="true"
+              />
+              <input
+                type="search"
+                placeholder="Search…"
+                className="w-full h-9 pl-10 pr-4 rounded-full text-xs outline-none transition-all"
+                style={{
+                  background: "var(--surface-2)",
+                  border: "1px solid var(--border)",
+                  color: "var(--text)",
+                }}
+                aria-label="Global search"
+              />
             </div>
+          </div>
 
-            <div className="w-px h-6 bg-[var(--border)]" />
-
-            <ThemeToggle />
-
-            <button className="relative w-11 h-11 rounded-xl bg-[var(--surface-2)] flex items-center justify-center text-[var(--text-muted)] hover:text-[var(--primary)] transition-all">
-              <Bell size={18} />
-              <span className="absolute top-3 right-3 w-2 h-2 rounded-full bg-[var(--danger)] border-2 border-[var(--surface)]" />
+          {/* Right: bell + theme + user avatar */}
+          <div className="flex items-center gap-2 lg:gap-3">
+            {/* Notification bell */}
+            <button
+              className="relative w-9 h-9 rounded-xl flex items-center justify-center transition-colors hover:bg-[var(--surface-2)]"
+              style={{ color: "var(--text-muted)" }}
+              aria-label="Notifications"
+            >
+              <Bell size={17} />
+              <span
+                className="absolute top-2 right-2 w-2 h-2 rounded-full border-2"
+                style={{ background: "var(--danger)", borderColor: "var(--surface)" }}
+                aria-hidden="true"
+              />
             </button>
 
-            <Link href="/" className="h-11 px-6 rounded-xl bg-[var(--surface-2)] text-[var(--text)] text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-[var(--primary)] hover:text-white transition-all group">
-              Exit to Shop <ArrowUpRight size={14} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-            </Link>
+            {/* Theme toggle */}
+            <ThemeToggle />
+
+            {/* User avatar + chevron */}
+            <button
+              className="flex items-center gap-1.5 pl-1 pr-2 h-9 rounded-xl transition-colors hover:bg-[var(--surface-2)]"
+              aria-label="Account menu"
+            >
+              <div
+                className="w-7 h-7 rounded-full flex items-center justify-center text-white font-black text-xs flex-shrink-0"
+                style={{ background: "var(--primary)" }}
+                aria-hidden="true"
+              >
+                A
+              </div>
+              <ChevronDown size={12} style={{ color: "var(--text-muted)" }} aria-hidden="true" />
+            </button>
           </div>
         </header>
 
-        {/* Central Stage */}
-        <main className="flex-1 p-10 overflow-y-auto">
+        {/* ── Page content ───────────────────────────── */}
+        <main className="flex-1 p-5 lg:p-8 overflow-y-auto">
           {children}
         </main>
       </div>

@@ -1,166 +1,250 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import {
-  LayoutDashboard, Package, MapPin, Heart, Star,
-  Lock, LogOut, User, ChevronRight, Bell, Gift,
+  LayoutDashboard, Package, Heart, Tag, MapPin, CreditCard,
+  Star, LifeBuoy, User, Calendar, Lock, Trash2, LogOut,
+  ChevronRight, Menu, X, Phone, Mail,
 } from "lucide-react";
 
-const navGroups = [
-  {
-    label: "Overview",
-    items: [
-      { href: "/account",           label: "Dashboard",       icon: LayoutDashboard },
-      { href: "/account/orders",    label: "My Orders",       icon: Package,  badge: "1" },
-    ],
-  },
-  {
-    label: "Shopping",
-    items: [
-      { href: "/account/wishlist",  label: "Wishlist",        icon: Heart },
-      { href: "/account/rewards",   label: "Rewards & Points",icon: Gift },
-    ],
-  },
-  {
-    label: "Settings",
-    items: [
-      { href: "/account/profile",   label: "Edit Profile",    icon: User },
-      { href: "/account/addresses", label: "Addresses",       icon: MapPin },
-      { href: "/account/reviews",   label: "My Reviews",      icon: Star },
-      { href: "/account/security",  label: "Change Password", icon: Lock },
-    ],
-  },
+const navItems = [
+  { href: "/account",             label: "Dashboard",          icon: LayoutDashboard },
+  { href: "/account/orders",      label: "My Orders",          icon: Package         },
+  { href: "/account/wishlist",    label: "Wishlist's",         icon: Heart           },
+  { href: "/account/coupons",     label: "Promo / Coupon",     icon: Tag             },
+  { href: "/account/addresses",   label: "Address",            icon: MapPin          },
+  { href: "/account/payments",    label: "Payments",           icon: CreditCard      },
+  { href: "/account/reviews",     label: "Product Reviews",    icon: Star            },
+  { href: "/account/support",     label: "Support Tickets",    icon: LifeBuoy        },
+  { href: "/account/profile",     label: "Manage Profile",     icon: User            },
+  { href: "/account/special-day", label: "Manage Special Day", icon: Calendar        },
+  { href: "/account/security",    label: "Change Password",    icon: Lock            },
+  { href: "/account/delete",      label: "Delete My Account",  icon: Trash2          },
 ];
 
-const allItems = navGroups.flatMap((g) => g.items);
+function maskEmail(email: string): string {
+  const [local, domain] = email.split("@");
+  return local.slice(0, 2) + "***@" + domain;
+}
+
+function maskPhone(phone: string): string {
+  return phone.slice(0, 7) + "****" + phone.slice(-2);
+}
+
+const USER = { name: "Rabeya Khatun", email: "rabeya@email.com", phone: "+8801700000000", initials: "R" };
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const currentLabel = allItems.find((i) => i.href === pathname)?.label ?? "Account";
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
-  return (
-    <div className="flex min-h-[calc(100vh-64px)]" style={{ background: "var(--bg)" }}>
-
-      {/* ── Sidebar ─────────────────────────────── */}
-      <aside
-        className="w-56 flex-shrink-0 flex flex-col sticky top-16 self-start"
+  const SidebarNav = () => (
+    <>
+      {/* Profile card — dark primary bg, overlaps the banner on desktop */}
+      <div
         style={{
-          height: "calc(100vh - 64px)",
-          background: "var(--surface)",
-          borderRight: "1px solid var(--border)",
+          background: "var(--primary)",
+          borderRadius: 14,
+          margin: "16px 12px 8px",
+          padding: "18px 16px",
+          boxShadow: "0 8px 24px rgba(0,0,0,0.22)",
+          flexShrink: 0,
         }}
       >
-        {/* Profile block */}
-        <div className="p-4" style={{ borderBottom: "1px solid var(--border)" }}>
-          <div className="flex items-center gap-3">
-            <div
-              className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-sm flex-shrink-0"
-              style={{ background: "var(--primary)" }}
-            >
-              R
-            </div>
-            <div className="min-w-0">
-              <p className="text-sm font-bold truncate" style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}>
-                Rabeya Khatun
-              </p>
-              <p className="text-[10px] truncate" style={{ color: "var(--text-muted)" }}>
-                rabeya@email.com
-              </p>
-            </div>
+        <div className="flex items-center gap-3">
+          <div
+            className="flex items-center justify-center font-bold text-xl flex-shrink-0"
+            style={{
+              width: 52, height: 52, borderRadius: "50%",
+              background: "rgba(255,255,255,0.2)",
+              color: "white",
+              fontFamily: "Plus Jakarta Sans, sans-serif",
+              border: "2px solid rgba(255,255,255,0.3)",
+            }}
+            aria-hidden="true"
+          >
+            {USER.initials}
           </div>
-          {/* Loyalty pill */}
-          <div className="mt-3 flex items-center justify-between px-2.5 py-1.5 rounded-lg text-xs font-semibold" style={{ background: "var(--primary-soft)", color: "var(--primary)" }}>
-            <span>🌿 Gold Member</span>
-            <span className="font-bold">340 pts</span>
+          <div className="min-w-0">
+            <p
+              className="font-bold text-sm truncate"
+              style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "white" }}
+            >
+              {USER.name}
+            </p>
+            <div className="flex items-center gap-1 mt-0.5">
+              <Mail size={10} style={{ color: "rgba(255,255,255,0.6)", flexShrink: 0 }} aria-hidden="true" />
+              <p className="truncate" style={{ color: "rgba(255,255,255,0.65)", fontSize: 11 }}>
+                {maskEmail(USER.email)}
+              </p>
+            </div>
+            <div className="flex items-center gap-1 mt-0.5">
+              <Phone size={10} style={{ color: "rgba(255,255,255,0.6)", flexShrink: 0 }} aria-hidden="true" />
+              <p className="truncate" style={{ color: "rgba(255,255,255,0.65)", fontSize: 11 }}>
+                {maskPhone(USER.phone)}
+              </p>
+            </div>
           </div>
         </div>
+      </div>
 
-        {/* Nav groups */}
-        <nav className="flex-1 overflow-y-auto px-3 py-3 space-y-4">
-          {navGroups.map((group) => (
-            <div key={group.label}>
-              <p
-                className="text-[10px] font-semibold uppercase tracking-widest mb-1 px-2"
-                style={{ color: "var(--text-muted)" }}
-              >
-                {group.label}
-              </p>
-              <div className="space-y-0.5">
-                {group.items.map(({ href, label, icon: Icon, badge }) => {
-                  const active = pathname === href;
-                  return (
-                    <Link
-                      key={href}
-                      href={href}
-                      className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
-                      style={{
-                        background: active ? "var(--primary-soft)" : "transparent",
-                        color: active ? "var(--primary)" : "var(--text-muted)",
-                      }}
-                    >
-                      <Icon size={14} />
-                      <span className="flex-1">{label}</span>
-                      {badge && (
-                        <span
-                          className="text-[10px] font-bold px-1.5 py-0.5 rounded-full text-white"
-                          style={{ background: "var(--warning)" }}
-                        >
-                          {badge}
-                        </span>
-                      )}
-                      {active && <ChevronRight size={11} style={{ color: "var(--primary)" }} />}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
-        </nav>
+      {/* Navigation */}
+      <nav
+        className="flex-1 overflow-y-auto scrollbar-thin px-2 py-2"
+        aria-label="Account navigation"
+      >
+        {navItems.map(({ href, label, icon: Icon }) => {
+          const active = pathname === href;
+          const isDangerous = href === "/account/delete";
+          return (
+            <Link
+              key={href}
+              href={href}
+              onClick={() => setDrawerOpen(false)}
+              className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium mb-0.5 transition-all"
+              style={{
+                background: active ? "var(--primary)" : "transparent",
+                color: active ? "white" : isDangerous ? "var(--danger)" : "var(--text-muted)",
+              }}
+              aria-current={active ? "page" : undefined}
+            >
+              <Icon
+                size={16}
+                style={{
+                  color: active ? "white" : isDangerous ? "var(--danger)" : "var(--text-muted)",
+                  flexShrink: 0,
+                }}
+                aria-hidden="true"
+              />
+              <span className="flex-1 truncate">{label}</span>
+              {active && (
+                <ChevronRight size={13} style={{ color: "white", flexShrink: 0 }} aria-hidden="true" />
+              )}
+            </Link>
+          );
+        })}
+      </nav>
 
-        {/* Logout */}
-        <div className="p-3" style={{ borderTop: "1px solid var(--border)" }}>
+      {/* Logout */}
+      <div style={{ borderTop: "1px solid var(--border)", padding: "10px 8px", flexShrink: 0 }}>
+        <button
+          className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium w-full transition-all hover:opacity-80"
+          style={{ color: "var(--danger)", background: "transparent" }}
+          aria-label="Sign out of your account"
+        >
+          <LogOut size={16} aria-hidden="true" />
+          <span>Logout</span>
+        </button>
+      </div>
+    </>
+  );
+
+  return (
+    <div style={{ background: "var(--bg)", minHeight: "calc(100vh - 64px)" }}>
+
+      {/* ── Banner (full width) ─────────────────── */}
+      <div
+        style={{
+          height: 200,
+          background: "linear-gradient(135deg, var(--primary) 0%, var(--account-banner-end) 100%)",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Inner wrapper keeps hamburger aligned with the page-container edges */}
+        <div className="page-container h-full flex items-start justify-end pt-4">
           <button
-            className="flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium w-full transition-colors hover:bg-red-50"
-            style={{ color: "var(--danger)" }}
+            className="lg:hidden w-10 h-10 rounded-xl flex items-center justify-center transition-opacity hover:opacity-80"
+            style={{ background: "rgba(255,255,255,0.18)" }}
+            onClick={() => setDrawerOpen(true)}
+            aria-label="Open navigation menu"
+            aria-expanded={drawerOpen}
+            aria-controls="mobile-account-drawer"
           >
-            <LogOut size={14} />
-            Sign Out
+            <Menu size={20} style={{ color: "white" }} />
           </button>
         </div>
-      </aside>
 
-      {/* ── Main area ───────────────────────────── */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Top bar */}
-        <header
-          className="h-14 flex items-center justify-between px-6 flex-shrink-0 sticky top-16 z-10"
-          style={{ background: "var(--surface)", borderBottom: "1px solid var(--border)" }}
+        {/* Decorative shapes */}
+        <div style={{ position: "absolute", top: -40, right: -40, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.06)", pointerEvents: "none" }} aria-hidden="true" />
+        <div style={{ position: "absolute", bottom: -70, left: "18%", width: 300, height: 300, borderRadius: "50%", background: "rgba(255,255,255,0.04)", pointerEvents: "none" }} aria-hidden="true" />
+        <div style={{ position: "absolute", top: 24, right: "28%", width: 80, height: 80, borderRadius: "50%", background: "rgba(255,255,255,0.09)", pointerEvents: "none" }} aria-hidden="true" />
+        <div style={{ position: "absolute", top: 80, left: -30, width: 140, height: 140, borderRadius: "50%", background: "rgba(255,255,255,0.03)", pointerEvents: "none" }} aria-hidden="true" />
+      </div>
+
+      {/* ── Mobile backdrop ─────────────────────── */}
+      {drawerOpen && (
+        <div
+          className="fixed inset-0 z-40 lg:hidden"
+          style={{ background: "rgba(0,0,0,0.5)", backdropFilter: "blur(2px)" }}
+          onClick={() => setDrawerOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
+      {/* ── Mobile drawer ───────────────────────── */}
+      <aside
+        id="mobile-account-drawer"
+        className={`fixed lg:hidden flex flex-col z-50 top-0 left-0 h-screen overflow-y-auto scrollbar-thin transition-transform duration-300 ease-in-out ${
+          drawerOpen ? "translate-x-0" : "-translate-x-full"
+        }`}
+        style={{
+          width: 280,
+          background: "var(--surface)",
+          boxShadow: "4px 0 24px rgba(0,0,0,0.18)",
+        }}
+        aria-label="Account navigation"
+        aria-hidden={!drawerOpen}
+      >
+        <div
+          className="flex items-center justify-between px-4 py-3 flex-shrink-0"
+          style={{ borderBottom: "1px solid var(--border)" }}
         >
-          <h1
-            className="text-sm font-semibold"
+          <span
+            className="font-bold text-sm"
             style={{ fontFamily: "Plus Jakarta Sans, sans-serif", color: "var(--text)" }}
           >
-            {currentLabel}
-          </h1>
-          <div className="flex items-center gap-2">
-            <button
-              className="relative w-8 h-8 rounded-lg flex items-center justify-center"
-              style={{ background: "var(--surface-2)" }}
-            >
-              <Bell size={14} style={{ color: "var(--text-muted)" }} />
-              <span
-                className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full"
-                style={{ background: "var(--danger)" }}
-              />
-            </button>
-            <Link href="/category/all" className="btn-sm btn-secondary text-xs">
-              ← Continue Shopping
-            </Link>
-          </div>
-        </header>
+            Account Menu
+          </span>
+          <button
+            onClick={() => setDrawerOpen(false)}
+            className="w-8 h-8 rounded-lg flex items-center justify-center"
+            style={{ background: "var(--surface-2)" }}
+            aria-label="Close menu"
+          >
+            <X size={15} style={{ color: "var(--text-muted)" }} />
+          </button>
+        </div>
+        <SidebarNav />
+      </aside>
 
-        {/* Page content */}
-        <main className="flex-1 p-6">{children}</main>
+      {/* ── Desktop: sidebar + content ──────────── */}
+      {/* page-container matches the shop's global max-width; position:relative + z-index:1 lifts this above the banner so the sidebar overlap works */}
+      <div className="page-container flex items-start" style={{ position: "relative", zIndex: 1 }}>
+
+        {/* Desktop sidebar — sticky, pulled up 90px to overlap banner */}
+        <aside
+          className="hidden lg:flex flex-col flex-shrink-0"
+          style={{
+            width: 280,
+            background: "var(--surface)",
+            borderRight: "1px solid var(--border)",
+            position: "sticky",
+            top: 64,
+            height: "calc(100vh - 64px)",
+            overflowY: "auto",
+            marginTop: -90,
+            zIndex: 10,
+          }}
+          aria-label="Account navigation"
+        >
+          <SidebarNav />
+        </aside>
+
+        {/* Right content area */}
+        <main className="flex-1 p-4 lg:p-6 min-w-0">
+          {children}
+        </main>
       </div>
     </div>
   );

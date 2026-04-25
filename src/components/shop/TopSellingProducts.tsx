@@ -103,14 +103,16 @@ function ProductCardHorizontal({ product }: { product: TopProduct }) {
                 : "border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
             }`}
           >
-            <ShoppingCart size={13} />
+             <div className="md:hidden">
+                  <ShoppingCart size={13} />
+             </div>
             {added ? "Added!" : "Add To Cart"}
           </button>
           <Link
             href={`/product/${product.slug}`}
             className="btn-md btn-primary flex-1"
           >
-            <ShoppingCart size={13} />
+            <div className="md:hidden"> <ShoppingCart size={13} />  </div>
             Buy Now
           </Link>
         </div>

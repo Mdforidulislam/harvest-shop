@@ -26,6 +26,7 @@ const statusColors: Record<string, string> = {
 };
 
 export default function OrderDetailPage({ params }: Props) {
+  
   const { id } = use(params);
   const order = fakeOrders.find((o) => o.id === id) ?? fakeOrders[0];
   const currentStep = statusIndex[order.status] ?? 0;

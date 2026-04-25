@@ -167,7 +167,7 @@ export default function Header() {
         </div>
 
         {/* ── Row 2b: Mobile search bar ─────────────────── */}
-        <div className="block md:hidden px-4 pb-2">
+        <div className="block md:hidden px-4 pb-2 pt-2">
           <div className="relative">
             <input
               type="text"
