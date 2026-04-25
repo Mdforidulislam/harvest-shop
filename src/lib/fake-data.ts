@@ -129,6 +129,7 @@ export const products: Product[] = [
     tags: ["honey", "litchi", "sweet"],
     isNew: true,
     specs: { Origin: "Dinajpur, Bangladesh" },
+    brand: { name: "Sundarban Gold" },
   },
   {
     id: "p1_3", slug: "black-seed-honey-500g",
@@ -142,6 +143,7 @@ export const products: Product[] = [
     tags: ["honey", "black-seed", "health"],
     isNew: true,
     specs: { Origin: "Jessore, Bangladesh" },
+    brand: { name: "Forest Pure" },
   },
   {
     id: "p3", slug: "deshi-ghee-500g",
