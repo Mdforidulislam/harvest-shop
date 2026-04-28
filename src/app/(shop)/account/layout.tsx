@@ -16,9 +16,7 @@ const navItems = [
   { href: "/account/addresses",   label: "Address",            icon: MapPin          },
   { href: "/account/payments",    label: "Payments",           icon: CreditCard      },
   { href: "/account/reviews",     label: "Product Reviews",    icon: Star            },
-  { href: "/account/support",     label: "Support Tickets",    icon: LifeBuoy        },
   { href: "/account/profile",     label: "Manage Profile",     icon: User            },
-  { href: "/account/special-day", label: "Manage Special Day", icon: Calendar        },
   { href: "/account/security",    label: "Change Password",    icon: Lock            },
   { href: "/account/delete",      label: "Delete My Account",  icon: Trash2          },
 ];

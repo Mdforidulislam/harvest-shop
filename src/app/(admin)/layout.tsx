@@ -40,18 +40,9 @@ const NAV_ITEMS: NavItem[] = [
     ],
   },
   { href: "/admin/customers",    label: "Customers",    icon: Users       },
-  { href: "/admin/analytics",    label: "Statistics",   icon: BarChart2   },
   { href: "/admin/reviews",      label: "Reviews",      icon: Star        },
   { href: "/admin/payments",     label: "Transactions", icon: CreditCard  },
-  { href: "/admin/sellers",      label: "Sellers",      icon: Store       },
   { href: "/admin/coupons",      label: "Hot offers",   icon: Zap         },
-  {
-    href: "/admin/appearance",   label: "Appearance",  icon: Paintbrush, expandable: true,
-    children: [
-      { href: "/admin/appearance",  label: "Theme"  },
-      { href: "/admin/settings",    label: "Layout" },
-    ],
-  },
   { href: "/admin/settings",     label: "Settings",    icon: Settings    },
 ];
 
