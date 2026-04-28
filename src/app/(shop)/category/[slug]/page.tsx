@@ -65,7 +65,6 @@ function CatalogCard({ product }: { product: Product }) {
     ? calcDiscount(product.price, product.salePrice)
     : null;
   const outOfStock = product.stock <= 0;
-  const isOffered = !!product.salePrice;
 
   function handleAddToCart(e: React.MouseEvent) {
     e.preventDefault();
@@ -87,80 +86,83 @@ function CatalogCard({ product }: { product: Product }) {
   }
 
   return (
-    <article className="group bg-[var(--surface)] rounded-lg border border-[var(--border)] shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow duration-300">
-      {/* Image area */}
-      <div className="relative aspect-square bg-[var(--surface)] overflow-hidden">
-        <Link
-          href={`/product/${product.slug}`}
-          className="block w-full h-full relative"
-          tabIndex={-1}
-          aria-label={`View ${product.name}`}
-        >
+    <article className="group bg-[var(--surface)] rounded-lg border border-[var(--border)] overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow duration-300">
+      {/* Image */}
+      <div className="relative p-5 aspect-square bg-[var(--surface)] flex items-center justify-center">
+        <Link href={`/product/${product.slug}`} className="relative w-full h-full block">
           <Image
             src={product.images[0]}
             alt={product.name}
             fill
             loading="lazy"
             sizes="(max-width: 767px) 50vw, (max-width: 1279px) 33vw, 25vw"
-            className="object-contain p-3 transition-transform duration-500 group-hover:scale-[1.03]"
+            className="object-contain transition-transform duration-500 group-hover:scale-105"
           />
         </Link>
 
-        {/* Top-left badge: New Arrival > Offered Items */}
+        {/* Top-left badge */}
         {product.isNew ? (
-          <span className="absolute top-2 left-2 bg-[var(--accent)] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm leading-5">
+          <span className="absolute top-2 left-2 bg-[var(--accent)] text-white text-[11px] font-semibold px-2.5 py-1 rounded">
             New Arrival
           </span>
-        ) : isOffered ? (
-          <span className="absolute top-2 left-2 bg-[var(--accent)] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm leading-5">
+        ) : product.salePrice ? (
+          <span className="absolute top-2 left-2 bg-[var(--accent)] text-white text-[11px] font-semibold px-2.5 py-1 rounded">
             Offered Items
           </span>
         ) : null}
 
-        {/* Top-right badge: Save % */}
+        {/* Top-right badge */}
         {discount !== null && (
-          <span className="absolute top-2 right-2 bg-[var(--success)] text-white text-[10px] font-bold px-2 py-0.5 rounded-sm leading-5">
+          <span className="absolute top-2 right-2 bg-[var(--success)] text-white text-[11px] font-semibold px-2.5 py-1 rounded">
             Save {discount}%
           </span>
         )}
       </div>
 
       {/* Info */}
-      <div className="p-3 flex flex-col flex-1">
+      <div className="px-4 pb-4 flex flex-col flex-1">
         <Link
           href={`/product/${product.slug}`}
-          className="text-[13px] font-medium text-[var(--text)] hover:text-[var(--accent)] line-clamp-2 mb-2 leading-snug min-h-[2.4rem] transition-colors"
+          className="text-[15px] text-[var(--text)] hover:text-[var(--accent)] line-clamp-1 mb-2 transition-colors"
         >
           {product.name}
         </Link>
 
-        <div className="flex items-baseline gap-2 mb-3">
+        <div className="flex items-center gap-2 mb-3">
           <span className="text-[15px] font-bold text-[var(--accent)]">
             {formatPrice(price)}
           </span>
           {product.salePrice && (
-            <span className="text-[12px] text-[var(--text-muted)] line-through">
+            <span className="text-[13px] text-[var(--text-muted)] line-through">
               {formatPrice(product.price)}
             </span>
           )}
         </div>
 
-        <button
-          onClick={handleAddToCart}
-          disabled={outOfStock}
-          aria-label={`Add ${product.name} to cart`}
-          className={[
-            "mt-auto w-full flex items-center justify-center gap-2 rounded border-2 text-[13px] font-semibold transition-all duration-200 min-h-[44px]",
-            outOfStock
-              ? "border-[var(--border)] text-[var(--text-muted)] cursor-not-allowed"
-              : added
-              ? "bg-[var(--success)] border-[var(--success)] text-white"
-              : "border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white",
-          ].join(" ")}
-        >
-          <ShoppingCart size={15} aria-hidden="true" />
-          {outOfStock ? "Out of Stock" : added ? "Added to Cart" : "Add to Cart"}
-        </button>
+        {/* Buttons: cart icon (left) + Buy Now (right) */}
+        <div className="flex gap-2 mt-auto">
+          <button
+            onClick={handleAddToCart}
+            disabled={outOfStock}
+            aria-label={`Add ${product.name} to cart`}
+            className={`btn h-10 w-10 shrink-0 border ${
+              outOfStock
+                ? "border-[var(--border)] text-[var(--text-muted)] cursor-not-allowed"
+                : added
+                ? "bg-[var(--success)] border-[var(--success)] text-white"
+                : "border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
+            }`}
+          >
+            <ShoppingCart size={16} aria-hidden="true" />
+          </button>
+          <Link
+            href={`/product/${product.slug}`}
+            className={`btn btn-md flex-1 ${outOfStock ? "btn-secondary opacity-50 pointer-events-none" : "btn-accent"}`}
+            aria-label={`Buy ${product.name} now`}
+          >
+            {outOfStock ? "Out of Stock" : "Buy Now"}
+          </Link>
+        </div>
       </div>
     </article>
   );
@@ -281,6 +283,50 @@ export default function CategoryPage({ params }: Props) {
   /* Sidebar filter panel (shared between desktop aside + mobile drawer) */
   const FilterPanel = (
     <div className="space-y-4">
+      {/* Categories */}
+      <FilterCard title="Categories">
+        <ul className="space-y-0.5">
+          <li>
+            <Link
+              href="/category/all"
+              className={[
+                "flex items-center justify-between px-2.5 py-2 rounded text-[13px] transition-colors",
+                isAll
+                  ? "bg-[var(--accent)] text-white font-semibold"
+                  : "text-[var(--text)] hover:text-[var(--accent)] hover:bg-[var(--accent-soft)]",
+              ].join(" ")}
+            >
+              <span>All Products</span>
+              <span className={`text-[11px] tabular-nums ${isAll ? "text-white/70" : "text-[var(--text-muted)]"}`}>
+                {products.length}
+              </span>
+            </Link>
+          </li>
+          {categories.map((cat) => {
+            const count = products.filter((p) => p.categorySlug === cat.slug).length;
+            const isActive = !isAll && cat.slug === slug;
+            return (
+              <li key={cat.id}>
+                <Link
+                  href={`/category/${cat.slug}`}
+                  className={[
+                    "flex items-center justify-between px-2.5 py-2 rounded text-[13px] transition-colors",
+                    isActive
+                      ? "bg-[var(--accent)] text-white font-semibold"
+                      : "text-[var(--text)] hover:text-[var(--accent)] hover:bg-[var(--accent-soft)]",
+                  ].join(" ")}
+                >
+                  <span>{cat.name}</span>
+                  <span className={`text-[11px] tabular-nums ${isActive ? "text-white/70" : "text-[var(--text-muted)]"}`}>
+                    {count}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </FilterCard>
+
       {/* Price Range */}
       <FilterCard title="Price Range">
         <div className="space-y-3">

@@ -9,6 +9,7 @@ import { selectWishlist } from "@/features/wishlist/wishlistSlice";
 import { categories } from "@/lib/fake-data";
 import { cn } from "@/lib/utils";
 import ThemeToggle from "@/components/shared/ThemeToggle";
+import Image from "next/image";
 
 const navLinks = [
   { label: "Home", href: "/" },
@@ -63,37 +64,59 @@ export default function Header() {
           scrolled ? "shadow-md py-2" : "py-3"
         )}
       >
-        <div className="page-container flex items-center gap-4">
+        <div className="page-container flex items-center gap-4 pb-2">
 
-          {/* Left: mobile button + logo */}
-          <div className="flex items-center gap-3 flex-1">
-            <button
-              onClick={() => setMobileOpen(true)}
-              className="lg:hidden w-9 h-9 flex items-center justify-center rounded border transition-colors border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)]"
-            >
-              <Menu size={20} />
-            </button>
+      {/* Left: mobile menu button + logo */}
+      <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+        {/* Mobile menu button (hidden on desktop) */}
+        <button
+          onClick={() => setMobileOpen(true)}
+          aria-label="Open menu"
+          className="
+            lg:hidden shrink-0
+            w-10 h-10 flex items-center justify-center
+            rounded-md border transition-all
+            border-[var(--border)] text-[var(--text-muted)]
+            hover:text-[var(--text)] hover:bg-[var(--surface-2)] hover:border-[var(--text-muted)]
+            active:scale-95
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/40
+          "
+        >
+          <Menu size={20} />
+        </button>
 
-            <Link href="/" className="flex items-center gap-2 shrink-0">
-              <div
-                className="w-10 h-10 rounded-lg flex items-center justify-center text-white font-black text-xl shadow"
-                style={{ background: "var(--primary)" }}
-              >
-                D
-              </div>
-              <div className="hidden sm:block leading-none">
-                <span className="font-black text-xl tracking-tight text-[var(--primary)]">DROVO</span>
-                <span className="block text-[9px] font-semibold uppercase tracking-widest" style={{ color: "var(--accent)" }}>.BD</span>
-              </div>
-            </Link>
-          </div>
+        {/* Logo */}
+        <Link
+          href="/"
+          aria-label="Drovo — Home"
+          className="
+            flex items-center shrink-0
+            transition-opacity hover:opacity-80
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/40 focus-visible:ring-offset-2
+            rounded-sm
+          "
+        >
+          <Image
+            src="/image-removebg-preview.png"
+            alt="Drovo"
+            width={140}
+            height={45}
+            priority
+            className="
+              h-8 sm:h-9 lg:h-10 w-auto object-contain
+              dark:brightness-110 dark:contrast-125
+              transition-all
+            "
+          />
+        </Link>
+      </div>
 
           {/* Center: Search — hidden on mobile (shown in second row instead) */}
           <div className="w-full max-w-2xl relative hidden md:block">
             <input
               type="text"
               placeholder="Search products..."
-              className="w-full h-11 pl-4 pr-12 rounded-lg border text-sm focus:outline-none transition-colors border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--primary)]"
+              className="w-full h-11 pl-4 pr-12 rounded-lg border text-sm focus:outline-none transition-colors border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--accent-hover)]"
               value={searchVal}
               onChange={(e) => setSearchVal(e.target.value)}
             />
@@ -105,47 +128,53 @@ export default function Header() {
             </button>
           </div>
 
-          {/* Right: Action icons */}
+          {/* Right: Action icons — State A (xl+): icon + label; State B (<xl): icon only */}
           <div className="flex items-center gap-1 flex-1 justify-end">
 
             {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="relative flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)]"
+              className="relative flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)] min-w-[44px]"
             >
               <div className="relative">
-                <Heart size={22} className="text-[var(--text-muted)] group-hover:text-red-500 transition-colors" />
+                <Heart size={22} className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
                 {wishlistItems.length > 0 && (
-                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold flex items-center justify-center">
+                  <span className="absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-red-500 text-white text-[9px] font-bold group-hover:text-[var(--primary)] flex items-center justify-center">
                     {wishlistItems.length}
                   </span>
                 )}
               </div>
-              <span className="hidden lg:block text-[10px] font-medium leading-none text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">Wishlist</span>
+              <span className="hidden xl:block text-[12px] font-semibold leading-none whitespace-nowrap text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">
+                Wishlist
+              </span>
             </Link>
 
             {/* My Account */}
             <Link
               href="/account"
-              className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)]"
+              className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)] min-w-[44px]"
             >
               <User size={22} className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
-              <span className="hidden lg:block text-[10px] font-medium leading-none text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">My Account</span>
+              <span className="hidden xl:block text-[12px] font-semibold leading-none whitespace-nowrap text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">
+                My Account
+              </span>
             </Link>
 
             {/* Track Order */}
             <Link
               href="/account/orders"
-              className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)]"
+              className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)] min-w-[44px]"
             >
               <Package size={22} className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
-              <span className="hidden lg:block text-[10px] font-medium leading-none text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">Track Order</span>
+              <span className="hidden xl:block text-[12px] font-semibold leading-none whitespace-nowrap text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">
+                Track Order
+              </span>
             </Link>
 
             {/* Cart */}
             <button
               onClick={() => dispatch(setDrawerOpen(true))}
-              className="flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg transition-colors group relative hover:bg-[var(--surface-2)]"
+              className="relative flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors group hover:bg-[var(--surface-2)] min-w-[44px]"
             >
               <div className="relative">
                 <ShoppingCart size={22} className="text-[var(--text-muted)] group-hover:text-[var(--primary)] transition-colors" />
@@ -158,11 +187,13 @@ export default function Header() {
                   </span>
                 )}
               </div>
-              <span className="hidden lg:block text-[10px] font-medium leading-none text-[var(--text-muted)] group-hover:text-[var(--text)] transition-colors">Cart</span>
+              <span className="hidden xl:block text-[12px] font-semibold leading-none whitespace-nowrap text-[var(--text)] group-hover:text-[var(--primary)] transition-colors">
+                Cart
+              </span>
             </button>
 
             {/* Dark mode toggle */}
-            <ThemeToggle className="hidden md:flex ml-2" />
+            <ThemeToggle className="md:flex ml-2" />
           </div>
         </div>
 
@@ -172,7 +203,7 @@ export default function Header() {
             <input
               type="text"
               placeholder="Search products..."
-              className="w-full h-11 pl-4 pr-12 rounded-lg border text-sm focus:outline-none transition-colors border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--primary)]"
+              className="w-full h-11 pl-4 pr-12 rounded-lg border text-sm focus:outline-none transition-colors border-[var(--border)] bg-[var(--surface-2)] text-[var(--text)] placeholder:text-[var(--text-muted)] focus:border-[var(--accent-hover)]"
             />
             <button
               className="absolute right-0 top-0 h-11 w-12 flex items-center justify-center rounded-r-lg text-white"

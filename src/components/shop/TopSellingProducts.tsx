@@ -103,18 +103,23 @@ function ProductCardHorizontal({ product }: { product: TopProduct }) {
                 : "border-[var(--accent)] text-[var(--accent)] hover:bg-[var(--accent)] hover:text-white"
             }`}
           >
-             <div className="md:hidden">
-                  <ShoppingCart size={13} />
+             <div className="md:flex items-center justify-center ">
+                  <ShoppingCart size={16} />
              </div>
-            {added ? "Added!" : "Add To Cart"}
+            <div className="lg:flex hidden">
+              {added ? "Added!" : "Add To Cart"}
+            </div>
           </button>
           <Link
             href={`/product/${product.slug}`}
-            className="btn-md btn-primary flex-1"
+            /* clamp(MIN, VARIABLE, MAX) */
+            className="btn-md btn-primary flex-1 flex items-center justify-center gap-2 text-[clamp(.7rem,1vw+0.4rem,.7rem)] lg:py-2 px-0"
           >
-            <div className="md:hidden"> <ShoppingCart size={13} />  </div>
-            Buy Now
-          </Link>
+            <div className="hidden md:flex">
+              <ShoppingCart size={18} /> 
+            </div>
+            <span>Buy Now</span>
+          </Link> 
         </div>
 
       </div>

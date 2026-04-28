@@ -57,31 +57,6 @@ export default function ProductBuyPanel({ product }: Props) {
   return (
     <div className="flex flex-col gap-5">
 
-      {/* Stock + category badges */}
-      <div className="flex items-center gap-2 flex-wrap">
-        {stock > 0 ? (
-          <span
-            className="text-xs font-semibold px-2.5 py-1 rounded-full"
-            style={{ color: "var(--success)", background: "color-mix(in srgb, var(--success) 14%, transparent)" }}
-          >
-            ✓ In Stock ({stock} available)
-          </span>
-        ) : (
-          <span
-            className="text-xs font-semibold px-2.5 py-1 rounded-full"
-            style={{ color: "var(--danger)", background: "color-mix(in srgb, var(--danger) 14%, transparent)" }}
-          >
-            Out of Stock
-          </span>
-        )}
-        <span
-          className="text-xs px-2.5 py-1 rounded-full"
-          style={{ background: "var(--surface-2)", color: "var(--text-muted)" }}
-        >
-          {product.category}
-        </span>
-      </div>
-
       {/* Title */}
       <h1
         className="text-2xl md:text-3xl font-black leading-tight"
@@ -120,6 +95,31 @@ export default function ProductBuyPanel({ product }: Props) {
             </span>
           </>
         )}
+      </div>
+
+         {/* Stock + category badges */}
+         <div className="flex items-center gap-2 flex-wrap">
+        {stock > 0 ? (
+          <span
+            className="text-xs font-semibold px-2.5 py-1 rounded-full"
+            style={{ color: "var(--success)", background: "color-mix(in srgb, var(--success) 14%, transparent)" }}
+          >
+            ✓ In Stock ({stock} available)
+          </span>
+        ) : (
+          <span
+            className="text-xs font-semibold px-2.5 py-1 rounded-full"
+            style={{ color: "var(--danger)", background: "color-mix(in srgb, var(--danger) 14%, transparent)" }}
+          >
+            Out of Stock
+          </span>
+        )}
+        <span
+          className="text-xs px-2.5 py-1 rounded-full"
+          style={{ background: "var(--surface-2)", color: "var(--text-muted)" }}
+        >
+          {product.category}
+        </span>
       </div>
 
       {/* Variants */}
@@ -191,7 +191,7 @@ export default function ProductBuyPanel({ product }: Props) {
       </div>
 
       {/* Primary actions: Add to Cart + Buy Now */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         <button
           onClick={handleAddToCart}
           disabled={stock === 0}
@@ -217,9 +217,9 @@ export default function ProductBuyPanel({ product }: Props) {
       </div>
 
       {/* Secondary actions: WhatsApp + Call */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        <a
-          href={waHref}
+      <div className="grid grid-cols-2 gap-3">
+        
+        <a href={waHref}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-md h-12 w-full font-bold text-sm text-white"
@@ -228,8 +228,8 @@ export default function ProductBuyPanel({ product }: Props) {
           <WhatsAppIcon size={16} />
           Order on WhatsApp
         </a>
-        <a
-          href={callHref}
+        
+        <a  href={callHref}
           className="btn btn-md h-12 w-full font-bold text-sm text-white"
           style={{ background: "var(--info)" }}
         >

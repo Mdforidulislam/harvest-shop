@@ -10,6 +10,7 @@ import TopSellingProducts from "@/components/shop/TopSellingProducts";
 import type { TopProduct } from "@/components/shop/TopSellingProducts";
 import CustomerReviews from "@/components/shop/CustomerReviews";
 import { categories, products, bestSellers, flashDeals } from "@/lib/fake-data";
+import CategoryCard from "@/components/shop/CategoryCard";
 
 const flashEndsAt = new Date(Date.now() + 8 * 3600 * 1000 + 45 * 60 * 1000);
 
@@ -55,23 +56,12 @@ export default function HomePage() {
           </Link>
         </div>
         <Carousel
-          slidesPerView={{ base: 4, sm: 5, md: 8, lg: 8, xl: 9 }}
-          gap={10}
+          slidesPerView={{ base: 3, sm: 3, md: 4, lg: 6, xl: 7 }}
+          gap={12}
           ariaLabel="Product categories"
         >
           {categories.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/category/${cat.slug}`}
-              className="group flex flex-col items-center gap-2 p-2 hover:opacity-90 transition-all bg-[var(--surface-2)] rounded-lg "
-            >
-              <div className="relative w-14 h-14 sm:w-16 sm:h-16 md:w-18 md:h-18 rounded-full overflow-hidden border-2 border-[var(--border)] group-hover:border-[var(--accent)] transition-all shadow-sm bg-[var(--surface-2)] shrink-0">
-                <Image src={cat.image} alt={cat.name} fill className="object-cover group-hover:scale-110 transition-transform duration-200" />
-              </div>
-              <span className="text-[10px] font-semibold text-center text-[var(--text-muted)] group-hover:text-[var(--primary)] leading-tight line-clamp-2 w-full">
-                {cat.name}
-              </span>
-            </Link>
+            <CategoryCard key={cat.id} cat={cat} />
           ))}
         </Carousel>
       </section>
@@ -81,18 +71,30 @@ export default function HomePage() {
       <TopSellingProducts products={topSelling} />
     </section>
 
-      {/* Flash Deals Banner */}
-      <section className=" py-2">
-        <div className="rounded-lg overflow-hidden p-5 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6" style={{ background: "var(--primary)" }}>
-          <div className="text-white text-center md:text-left">
-            <div className="flex items-center gap-2 mb-2">
-              <Zap size={18} fill="white" style={{ color: "var(--accent)" }} />
-              <span className="text-xs font-bold uppercase tracking-widest text-white/80">Flash Sale</span>
-            </div>
-            <h2 className="text-2xl md:text-4xl font-black text-white mb-3">Today&apos;s Hot Deals!</h2>
-            <FlashDealTimer endsAt={flashEndsAt} />
+    {/* Flash Deals Banner */}
+    <section className="py-2">
+      <div
+        className="rounded-lg overflow-hidden p-5 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6"
+        style={{ background: "var(--primary)" }}
+      >
+        {/* Timer Section */}
+        <div className="text-white text-center md:text-left w-full md:w-1/2 lg:w-auto">
+          <div className="flex items-center gap-2 mb-2 justify-center md:justify-start">
+            <Zap size={18} fill="white" style={{ color: "var(--accent)" }} />
+            <span className="text-xs font-bold uppercase tracking-widest text-white/80">
+              Flash Sale
+            </span>
           </div>
-          <div className="grid grid-cols-2 gap-3 w-full md:w-auto">
+          <h2 className="text-2xl md:text-4xl font-black text-white mb-3">
+            Today&apos;s Hot Deals!
+          </h2>
+          <FlashDealTimer endsAt={flashEndsAt} />
+        </div>
+
+        {/* Right Wrapper — groups cards + button on mobile/tablet, dissolves on desktop via lg:contents */}
+        <div className="w-full md:w-1/2 lg:w-auto flex flex-col gap-3 lg:contents">
+          {/* Product Cards: 1 column on mobile/tablet, 2 columns on desktop */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-3 w-full lg:w-auto">
             {flashDeals.slice(0, 2).map((p) => (
               <Link
                 key={p.id}
@@ -103,65 +105,37 @@ export default function HomePage() {
                   <Image src={p.images[0]} alt={p.name} fill className="object-cover" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-white text-xs font-bold line-clamp-2 leading-tight">{p.name}</p>
-                  <p className="font-black mt-1" style={{ color: "var(--accent)" }}>৳{p.salePrice || p.price}</p>
+                  <p className="text-white text-xs font-bold line-clamp-2 leading-tight">
+                    {p.name}
+                  </p>
+                  <p className="font-black mt-1" style={{ color: "var(--accent)" }}>
+                    ৳{p.salePrice || p.price}
+                  </p>
                 </div>
               </Link>
             ))}
           </div>
+
+          {/* All Deals Button */}
           <Link
             href="/category/all?sort=sale"
-            className="shrink-0 px-6 py-3 rounded-lg font-bold text-sm text-white border border-white/30 hover:bg-white hover:text-[var(--primary)] transition-all whitespace-nowrap"
+            className="shrink-0 self-start lg:self-auto w-fit lg:w-auto px-6 py-3 rounded-lg font-bold text-sm text-white border border-white/30 hover:bg-white hover:text-[var(--primary)] transition-all whitespace-nowrap text-center"
           >
             All Deals →
           </Link>
         </div>
-      </section>
+      </div>
+    </section>
 
-      {/* Best Sellers */}
+      {/* All Product section */}
       <ProductShelf
-        title="Recommended Products"
-        subtitle="Products we recommend for you"
+        title="All Product List "
+        subtitle="Products we list for you"
         products={bestSellers}
         viewAllLink="/category/all?sort=popular"
         carousel
       />
 
-
-
-      {/* Promotional Banners */}
-      <section className=" py-2">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="relative rounded-lg overflow-hidden h-44 md:h-52 group cursor-pointer">
-            <Image src="https://images.unsplash.com/photo-1471193945509-9ad0617afabf?w=800" alt="Banner" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
-            <div className="absolute inset-0 p-6 flex flex-col justify-end">
-              <span className="inline-block text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded mb-2 w-fit" style={{ background: "var(--accent)" }}>
-                Special Offer
-              </span>
-              <h3 className="text-white text-xl font-black mb-1">Organic Honey</h3>
-              <p className="text-white/70 text-xs mb-3">Up to 20% off — Limited stock</p>
-              <Link href="/category/honey" className="text-white text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
-                Shop Now <ArrowRight size={12} />
-              </Link>
-            </div>
-          </div>
-          <div className="relative rounded-lg overflow-hidden h-44 md:h-52 group cursor-pointer">
-            <Image src="https://images.unsplash.com/photo-1542838132-92c53300491e?w=800" alt="Banner" fill className="object-cover group-hover:scale-105 transition-transform duration-500" />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
-            <div className="absolute inset-0 p-6 flex flex-col justify-end">
-              <span className="inline-block text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded mb-2 w-fit" style={{ background: "var(--primary)" }}>
-                Wholesale
-              </span>
-              <h3 className="text-white text-xl font-black mb-1">Bulk Nuts & Seeds</h3>
-              <p className="text-white/70 text-xs mb-3">Best prices for bulk orders</p>
-              <Link href="/category/nuts" className="text-white text-xs font-bold flex items-center gap-1 hover:gap-2 transition-all">
-                Shop Now <ArrowRight size={12} />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* New Arrivals */}
       <ProductShelf
@@ -169,22 +143,6 @@ export default function HomePage() {
         subtitle="Fresh products just added"
         products={newArrivals}
         viewAllLink="/category/all?sort=new"
-      />
-
-      {/* Honey Collection */}
-      <ProductShelf
-        title="Pure Honey Collection"
-        subtitle="100% raw & unfiltered"
-        products={honeyProducts}
-        viewAllLink="/category/honey"
-      />
-
-      {/* Spices */}
-      <ProductShelf
-        title="Spices of Bengal"
-        subtitle="Hand-picked & stone-ground"
-        products={spicesProducts}
-        viewAllLink="/category/spices"
       />
 
       {/* Customer Reviews */}

@@ -12,10 +12,10 @@ export default function Footer() {
 
       {/* ── Top Section ────────────────────────────────── */}
       <div className="page-container py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-[2fr_1fr_1fr_1fr_1fr] gap-8">
 
           {/* Column 1: Brand — full-width on tablet, normal on desktop */}
-          <div className="md:col-span-2 lg:col-span-1">
+          <div className="col-span-2 md:col-span-4 lg:col-span-1">
             {/* Logo */}
             <Link href="/" className="inline-flex items-center gap-2 mb-5">
               <div
@@ -118,7 +118,7 @@ export default function Footer() {
       {/* ── Bottom Bar ─────────────────────────────────── */}
       <div style={{ borderTop: "1px solid var(--border)" }}>
         <div className="page-container py-4">
-          <div className="flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-center justify-between gap-4">
+          <div className="flex flex-col items-center gap-4 md:flex-row md:flex-wrap md:justify-between lg:flex-nowrap">
 
             {/* Copyright */}
             <p className="text-xs whitespace-nowrap shrink-0 order-1" style={{ color: "var(--text-muted)" }}>

@@ -279,7 +279,6 @@ export default function CheckoutPage() {
                 LEFT COLUMN  — 60%
             ═══════════════════════════════════════ */}
             <div className="w-full lg:w-[60%] space-y-5">
-
               {/* 1 · Order Review ─────────────────── */}
               <Card>
                 <CardTitle>Order Review</CardTitle>
@@ -358,256 +357,140 @@ export default function CheckoutPage() {
 
               {/* 2 · Shipping Address ─────────────── */}
               <Card>
-                <CardTitle>Shipping Address</CardTitle>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <CardTitle>Shipping Address</CardTitle>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-                  {/* Full Name */}
-                  <div className="sm:col-span-2">
-                    <Label htmlFor="sh-name" required>Full Name</Label>
+                {/* Full Name */}
+                <div>
+                  <Label htmlFor="sh-name" required>Full Name</Label>
+                  <input
+                    id="sh-name"
+                    type="text"
+                    autoComplete="name"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.name}
+                    aria-describedby={errors.name ? "sh-name-err" : undefined}
+                    value={form.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    onBlur={() => handleBlur("name")}
+                    placeholder="e.g. Ariful Islam"
+                    className={INPUT + (errors.name ? INPUT_ERR : "")}
+                  />
+                  <FieldError id="sh-name-err" msg={errors.name} />
+                </div>
+
+                {/* Phone */}
+                <div>
+                  <Label htmlFor="sh-phone" required>Phone Number</Label>
+                  <div className="flex">
+                    <span
+                      className="h-11 px-3 shrink-0 flex items-center bg-[var(--surface-2)] border border-r-0 border-[var(--border)] rounded-l-[6px] text-[14px] font-medium text-[var(--text-muted)] select-none"
+                      aria-label="Bangladesh country code +88"
+                    >
+                      +88
+                    </span>
                     <input
-                      id="sh-name"
-                      type="text"
-                      autoComplete="name"
+                      id="sh-phone"
+                      type="tel"
+                      maxLength={11}
+                      autoComplete="tel-national"
                       required
                       aria-required="true"
-                      aria-invalid={!!errors.name}
-                      aria-describedby={errors.name ? "sh-name-err" : undefined}
-                      value={form.name}
-                      onChange={(e) => handleChange("name", e.target.value)}
-                      onBlur={() => handleBlur("name")}
-                      placeholder="e.g. Ariful Islam"
-                      className={INPUT + (errors.name ? INPUT_ERR : "")}
-                    />
-                    <FieldError id="sh-name-err" msg={errors.name} />
-                  </div>
-
-                  {/* Phone */}
-                  <div className="sm:col-span-2">
-                    <Label htmlFor="sh-phone" required>Phone Number</Label>
-                    <div className="flex">
-                      <span
-                        className="h-11 px-3 shrink-0 flex items-center bg-[var(--surface-2)] border border-r-0 border-[var(--border)] rounded-l-[6px] text-[14px] font-medium text-[var(--text-muted)] select-none"
-                        aria-label="Bangladesh country code +88"
-                      >
-                        +88
-                      </span>
-                      <input
-                        id="sh-phone"
-                        type="tel"
-                        maxLength={11}
-                        autoComplete="tel-national"
-                        required
-                        aria-required="true"
-                        aria-invalid={!!errors.phone}
-                        aria-describedby={errors.phone ? "sh-phone-err" : undefined}
-                        aria-label="Phone number, without country code"
-                        value={form.phone}
-                        onChange={(e) => handleChange("phone", e.target.value.replace(/\D/g, ""))}
-                        onBlur={() => handleBlur("phone")}
-                        placeholder="01XXXXXXXXX"
-                        className={
-                          "flex-1 h-11 px-3 text-[14px] rounded-r-[6px] border border-[var(--border)] " +
-                          "bg-[var(--surface)] text-[var(--text)] outline-none transition-colors " +
-                          "focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/10 " +
-                          "placeholder:text-[var(--text-muted)]" +
-                          (errors.phone ? " " + INPUT_ERR.trim() : "")
-                        }
-                      />
-                    </div>
-                    <FieldError id="sh-phone-err" msg={errors.phone} />
-                  </div>
-
-                  {/* District */}
-                  <div>
-                    <Label htmlFor="sh-district" required>District</Label>
-                    <select
-                      id="sh-district"
-                      required
-                      aria-required="true"
-                      aria-invalid={!!errors.district}
-                      aria-describedby={errors.district ? "sh-district-err" : undefined}
-                      value={form.district}
-                      onChange={(e) => {
-                        handleChange("district", e.target.value);
-                        setForm((f) => ({ ...f, thana: "" }));
-                      }}
-                      onBlur={() => handleBlur("district")}
-                      className={SELECT + (errors.district ? INPUT_ERR : "")}
-                    >
-                      <option value="">Select District</option>
-                      {DISTRICTS.map((d) => (
-                        <option key={d} value={d}>{d}</option>
-                      ))}
-                    </select>
-                    <FieldError id="sh-district-err" msg={errors.district} />
-                  </div>
-
-                  {/* Thana */}
-                  <div>
-                    <Label htmlFor="sh-thana">
-                      Thana{" "}
-                      <span className="text-[11px] text-[var(--text-muted)] normal-case tracking-normal font-normal">
-                        (optional)
-                      </span>
-                    </Label>
-                    <select
-                      id="sh-thana"
-                      value={form.thana}
-                      onChange={(e) => handleChange("thana", e.target.value)}
-                      disabled={thanas.length === 0}
-                      className={SELECT + " disabled:opacity-50 disabled:cursor-not-allowed"}
-                    >
-                      <option value="">
-                        {thanas.length ? "Select Thana" : "Select district first"}
-                      </option>
-                      {thanas.map((t) => (
-                        <option key={t} value={t}>{t}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Address */}
-                  <div className="sm:col-span-2">
-                    <Label htmlFor="sh-address" required>Full Address</Label>
-                    <textarea
-                      id="sh-address"
-                      rows={3}
-                      required
-                      aria-required="true"
-                      aria-invalid={!!errors.address}
-                      aria-describedby={errors.address ? "sh-address-err" : undefined}
-                      value={form.address}
-                      onChange={(e) => handleChange("address", e.target.value)}
-                      onBlur={() => handleBlur("address")}
-                      placeholder="House no, Road no, Area, Landmark..."
+                      aria-invalid={!!errors.phone}
+                      aria-describedby={errors.phone ? "sh-phone-err" : undefined}
+                      aria-label="Phone number, without country code"
+                      value={form.phone}
+                      onChange={(e) => handleChange("phone", e.target.value.replace(/\D/g, ""))}
+                      onBlur={() => handleBlur("phone")}
+                      placeholder="01XXXXXXXXX"
                       className={
-                        "w-full px-3 py-2.5 text-[14px] rounded-[6px] border border-[var(--border)] " +
-                        "bg-[var(--surface)] text-[var(--text)] outline-none transition-colors resize-none " +
+                        "flex-1 min-w-0 h-11 px-3 text-[14px] rounded-r-[6px] border border-[var(--border)] " +
+                        "bg-[var(--surface)] text-[var(--text)] outline-none transition-colors " +
                         "focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/10 " +
                         "placeholder:text-[var(--text-muted)]" +
-                        (errors.address ? " " + INPUT_ERR.trim() : "")
+                        (errors.phone ? " " + INPUT_ERR.trim() : "")
                       }
                     />
-                    <FieldError id="sh-address-err" msg={errors.address} />
                   </div>
-                </div>
-              </Card>
-
-              {/* 3 · Billing Address ──────────────── */}
-              <Card>
-                <CardTitle>Billing Address</CardTitle>
-                <div
-                  role="radiogroup"
-                  aria-label="Billing address options"
-                  className="space-y-3"
-                >
-                  {/* Same as shipping */}
-                  <button
-                    type="button"
-                    role="radio"
-                    aria-checked={sameAddress}
-                    onClick={() => setSameAddress(true)}
-                    className="w-full flex items-center justify-between text-left cursor-pointer group"
-                  >
-                    <span className="text-[14px] text-[var(--text)]">Same as shipping address</span>
-                    <span
-                      className={[
-                        "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all",
-                        sameAddress
-                          ? "border-[var(--accent)] bg-[var(--accent)]"
-                          : "border-[var(--border)] group-hover:border-[var(--accent)]/60",
-                      ].join(" ")}
-                    >
-                      {sameAddress && <span className="w-2 h-2 rounded-full bg-white" />}
-                    </span>
-                  </button>
-
-                  {/* Different address */}
-                  <button
-                    type="button"
-                    role="radio"
-                    aria-checked={!sameAddress}
-                    onClick={() => setSameAddress(false)}
-                    className="w-full flex items-center justify-between text-left cursor-pointer group"
-                  >
-                    <span className="text-[14px] text-[var(--text)]">Use a different billing address</span>
-                    <span
-                      className={[
-                        "w-5 h-5 rounded-full border-2 flex items-center justify-center shrink-0 transition-all",
-                        !sameAddress
-                          ? "border-[var(--accent)] bg-[var(--accent)]"
-                          : "border-[var(--border)] group-hover:border-[var(--accent)]/60",
-                      ].join(" ")}
-                    >
-                      {!sameAddress && <span className="w-2 h-2 rounded-full bg-white" />}
-                    </span>
-                  </button>
+                  <FieldError id="sh-phone-err" msg={errors.phone} />
                 </div>
 
-                {/* Expanded billing fields */}
-                {!sameAddress && (
-                  <div className="mt-5 pt-5 border-t border-[var(--border)] grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="sm:col-span-2">
-                      <Label htmlFor="bl-name">Full Name</Label>
-                      <input
-                        id="bl-name"
-                        type="text"
-                        autoComplete="billing name"
-                        value={form.billingName}
-                        onChange={(e) => handleChange("billingName", e.target.value)}
-                        placeholder="Billing contact name"
-                        className={INPUT}
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="bl-district">District</Label>
-                      <select
-                        id="bl-district"
-                        value={form.billingDistrict}
-                        onChange={(e) => {
-                          handleChange("billingDistrict", e.target.value);
-                          setForm((f) => ({ ...f, billingThana: "" }));
-                        }}
-                        className={SELECT}
-                      >
-                        <option value="">Select District</option>
-                        {DISTRICTS.map((d) => <option key={d} value={d}>{d}</option>)}
-                      </select>
-                    </div>
-                    <div>
-                      <Label htmlFor="bl-thana">Thana</Label>
-                      <select
-                        id="bl-thana"
-                        value={form.billingThana}
-                        onChange={(e) => handleChange("billingThana", e.target.value)}
-                        disabled={billingThanas.length === 0}
-                        className={SELECT + " disabled:opacity-50 disabled:cursor-not-allowed"}
-                      >
-                        <option value="">
-                          {billingThanas.length ? "Select Thana" : "Select district first"}
-                        </option>
-                        {billingThanas.map((t) => <option key={t} value={t}>{t}</option>)}
-                      </select>
-                    </div>
-                    <div className="sm:col-span-2">
-                      <Label htmlFor="bl-address">Full Address</Label>
-                      <textarea
-                        id="bl-address"
-                        rows={3}
-                        value={form.billingAddress}
-                        onChange={(e) => handleChange("billingAddress", e.target.value)}
-                        placeholder="Billing address..."
-                        className={
-                          "w-full px-3 py-2.5 text-[14px] rounded-[6px] border border-[var(--border)] " +
-                          "bg-[var(--surface)] text-[var(--text)] outline-none transition-colors resize-none " +
-                          "focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/10 " +
-                          "placeholder:text-[var(--text-muted)]"
-                        }
-                      />
-                    </div>
-                  </div>
-                )}
-              </Card>
+                {/* District */}
+                <div>
+                  <Label htmlFor="sh-district" required>District</Label>
+                  <select
+                    id="sh-district"
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.district}
+                    aria-describedby={errors.district ? "sh-district-err" : undefined}
+                    value={form.district}
+                    onChange={(e) => {
+                      handleChange("district", e.target.value);
+                      setForm((f) => ({ ...f, thana: "" }));
+                    }}
+                    onBlur={() => handleBlur("district")}
+                    className={SELECT + (errors.district ? INPUT_ERR : "")}
+                  >
+                    <option value="">Select District</option>
+                    {DISTRICTS.map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </select>
+                  <FieldError id="sh-district-err" msg={errors.district} />
+                </div>
+
+                {/* Thana */}
+                <div>
+                  <Label htmlFor="sh-thana">
+                    Thana{" "}
+                    <span className="text-[11px] text-[var(--text-muted)] normal-case tracking-normal font-normal">
+                      (optional)
+                    </span>
+                  </Label>
+                  <select
+                    id="sh-thana"
+                    value={form.thana}
+                    onChange={(e) => handleChange("thana", e.target.value)}
+                    disabled={thanas.length === 0}
+                    className={SELECT + " disabled:opacity-50 disabled:cursor-not-allowed"}
+                  >
+                    <option value="">
+                      {thanas.length ? "Select Thana" : "Select district first"}
+                    </option>
+                    {thanas.map((t) => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Address */}
+                <div className="sm:col-span-2">
+                  <Label htmlFor="sh-address" required>Full Address</Label>
+                  <textarea
+                    id="sh-address"
+                    rows={3}
+                    required
+                    aria-required="true"
+                    aria-invalid={!!errors.address}
+                    aria-describedby={errors.address ? "sh-address-err" : undefined}
+                    value={form.address}
+                    onChange={(e) => handleChange("address", e.target.value)}
+                    onBlur={() => handleBlur("address")}
+                    placeholder="House no, Road no, Area, Landmark..."
+                    className={
+                      "w-full px-3 py-2.5 text-[14px] rounded-[6px] border border-[var(--border)] " +
+                      "bg-[var(--surface)] text-[var(--text)] outline-none transition-colors resize-none " +
+                      "focus:border-[var(--accent)] focus:ring-2 focus:ring-[var(--accent)]/10 " +
+                      "placeholder:text-[var(--text-muted)]" +
+                      (errors.address ? " " + INPUT_ERR.trim() : "")
+                    }
+                  />
+                  <FieldError id="sh-address-err" msg={errors.address} />
+                </div>
+              </div>
+            </Card>
             </div>
 
             {/* ═══════════════════════════════════════

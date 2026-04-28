@@ -2,7 +2,7 @@
 import { use } from "react";
 import Link from "next/link";
 import { ChevronRight, Share2 } from "lucide-react";
-import { products, reviews as allReviews } from "@/lib/fake-data";
+import { products, reviews as allReviews, categories, bestSellers, newArrivals } from "@/lib/fake-data";
 import { calcDiscount } from "@/lib/utils";
 import { useAppSelector, useAppDispatch } from "@/hooks/useAppDispatch";
 import { toggleWishlist, selectIsWishlisted } from "@/features/wishlist/wishlistSlice";
@@ -11,6 +11,8 @@ import ProductBuyPanel from "@/components/shop/ProductBuyPanel";
 import ProductInfoCard from "@/components/shop/ProductInfoCard";
 import ProductTabs from "@/components/shop/ProductTabs";
 import ProductShelf from "@/components/shop/ProductShelf";
+import CategoryCard from "@/components/shop/CategoryCard";
+import Carousel from "@/components/ui/Carousel";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -117,6 +119,7 @@ export default function ProductPage({ params }: Props) {
             videoUrl={product.videoUrl}
           />
         </div>
+
 
         {/* ── Related products ───────────────────────────── */}
         {related.length > 0 && (

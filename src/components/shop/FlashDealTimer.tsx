@@ -30,32 +30,32 @@ export default function FlashDealTimer({ endsAt }: { endsAt: Date }) {
   ];
 
   return (
-    <div className="flex items-center gap-3">
+    <div className="flex items-center justify-center lg:justify-items-start gap-3">
       {boxes.map(({ label, val }, i) => (
         <div key={label} className="flex items-center gap-3">
           <div className="flex flex-col items-center">
-            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[var(--surface)] border-2 border-[var(--danger)] flex items-center justify-center shadow-lg shadow-red-900/10">
+            <div className="relative w-14 h-14 md:w-16 md:h-16 rounded-2xl bg-[var(--surface)] border-2 border-[var(--accent)] flex items-center justify-center shadow-lg shadow-red-900/10">
               <AnimatePresence mode="popLayout">
                 <motion.span
                   key={val}
                   initial={{ y: 5, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   exit={{ y: -5, opacity: 0 }}
-                  className="text-2xl md:text-3xl font-black text-[var(--danger)]"
+                  className="text-2xl md:text-3xl font-black text-[var(--accent)]"
                   style={{ fontFamily: 'Plus Jakarta Sans, sans-serif' }}
                 >
                   {pad(val)}
                 </motion.span>
               </AnimatePresence>
             </div>
-            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--danger)] mt-2 opacity-60">
+            <span className="text-[10px] font-black uppercase tracking-widest text-[var(--accent)] mt-2 opacity-60">
               {label}
             </span>
           </div>
           {i < 2 && (
             <div className="flex flex-col gap-1.5 mt-[-1rem]">
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--danger)]/30" />
-              <div className="w-1.5 h-1.5 rounded-full bg-[var(--danger)]/30" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/30" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]/30" />
             </div>
           )}
         </div>
@@ -63,10 +63,10 @@ export default function FlashDealTimer({ endsAt }: { endsAt: Date }) {
 
       {/* Milliseconds for urgency */}
       <div className="flex flex-col items-center ml-2 border-l border-[var(--border)] pl-4">
-        <span className="text-xl md:text-2xl font-black text-[var(--danger)] opacity-30 tabular-nums">
+        <span className="text-xl md:text-2xl font-black text-[var(--accent)]  tabular-nums">
           {pad(time.ms)}
         </span>
-        <span className="text-[8px] font-black uppercase tracking-widest opacity-20">MS</span>
+        <span className="text-[var(--accent)] font-black uppercase tracking-widest opacity-60">MS</span>
       </div>
     </div>
   );
